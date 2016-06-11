@@ -19,58 +19,56 @@ character(len=2) :: language = 'NL'   !< default : Dutch
 private :: maxmsg, maxpar, language
 
 !> IDs for the strings in this module:
-enum, bind(c)
 ! messages:
-    enumerator :: errorIndicator
-    enumerator :: warningIndicator
-    enumerator :: validation_only_for_type_runup1
-    enumerator :: adjusted_xcoordinates
-    enumerator :: slope_negative
-    enumerator :: split_cross_section_seq_berm
-    enumerator :: adjust_non_horizontal_seq_berm
-    enumerator :: merging_seq_berm
-    enumerator :: calc_horizontal_lengths
-    enumerator :: calc_horizontal_distance
-    enumerator :: remove_dike_segments_index
-    enumerator :: calc_representative_slope_angle
-    enumerator :: calc_influence_roughness
-    enumerator :: calc_influence_berms
-    enumerator :: calc_influence_factors
-    enumerator :: calc_wave_overtopping_discharge
-    enumerator :: breaker_param_is_zero
-    enumerator :: calc_wave_steepness_period_is_zero
-    enumerator :: calc_breaker_param_steepness_is_zero
-    enumerator :: calc_roots_cubic_function
-    enumerator :: psi_not_in_range
-    enumerator :: dimension_cross_section_less_than_2
-    enumerator :: ycoordinates_must_be_nondecreasing
-    enumerator :: dike_segment_mismatches
-    enumerator :: max2berm_segments
-    enumerator :: first_and_last_must_be_slope
-    enumerator :: wl_above_crest_not_allowed
-    enumerator :: interpolation_error_split_cross_sections
-    enumerator :: wl_above_crest
-    enumerator :: wave_height_or_periode_less_zero
-    enumerator :: wave_direction_not_in_range
-    enumerator :: no_convergence_2percent_wave_runup
-    enumerator :: RemovingHorizontalBerm
+integer, parameter :: errorIndicator = 1
+integer, parameter :: warningIndicator = 2
+integer, parameter :: validation_only_for_type_runup1 = 3
+integer, parameter :: adjusted_xcoordinates = 4
+integer, parameter :: slope_negative = 5
+integer, parameter :: split_cross_section_seq_berm = 6
+integer, parameter :: adjust_non_horizontal_seq_berm = 7
+integer, parameter :: merging_seq_berm = 8
+integer, parameter :: calc_horizontal_lengths = 9
+integer, parameter :: calc_horizontal_distance = 10
+integer, parameter :: remove_dike_segments_index = 11
+integer, parameter :: calc_representative_slope_angle = 12
+integer, parameter :: calc_influence_roughness = 13
+integer, parameter :: calc_influence_berms = 14
+integer, parameter :: calc_influence_factors = 15
+integer, parameter :: calc_wave_overtopping_discharge = 16
+integer, parameter :: breaker_param_is_zero = 17
+integer, parameter :: calc_wave_steepness_period_is_zero = 18
+integer, parameter :: calc_breaker_param_steepness_is_zero = 19
+integer, parameter :: calc_roots_cubic_function = 20
+integer, parameter :: psi_not_in_range = 21
+integer, parameter :: dimension_cross_section_less_than_2 = 22
+integer, parameter :: ycoordinates_must_be_nondecreasing = 23
+integer, parameter :: dike_segment_mismatches = 24
+integer, parameter :: max2berm_segments = 25
+integer, parameter :: first_and_last_must_be_slope = 26
+integer, parameter :: wl_above_crest_not_allowed = 27
+integer, parameter :: interpolation_error_split_cross_sections = 28
+integer, parameter :: wl_above_crest = 29
+integer, parameter :: wave_height_or_periode_less_zero = 30
+integer, parameter :: wave_direction_not_in_range = 31
+integer, parameter :: no_convergence_2percent_wave_runup = 32
+integer, parameter :: RemovingHorizontalBerm = 33
 ! formats :
-    enumerator :: model_factor_smaller_than
-    enumerator :: model_factor_not_between
-    enumerator :: roughnessfactors_out_of_range
-    enumerator :: allocateError
-    enumerator :: xcoordinates_must_increase
-    enumerator :: zero_or_negative_varModelFactorCriticalOvertopping
-    enumerator :: zero_or_negative_critical_overtopping
-    enumerator :: diffx_too_small
-    enumerator :: diffy_too_small
+integer, parameter :: model_factor_smaller_than = 34
+integer, parameter :: model_factor_not_between = 35
+integer, parameter :: roughnessfactors_out_of_range = 36
+integer, parameter :: allocateError = 37
+integer, parameter :: xcoordinates_must_increase = 38
+integer, parameter :: zero_or_negative_varModelFactorCriticalOvertopping = 39
+integer, parameter :: zero_or_negative_critical_overtopping = 40
+integer, parameter :: diffx_too_small = 41
+integer, parameter :: diffy_too_small = 42
 ! parameters :
-    enumerator :: par_fB
-    enumerator :: par_fN
-    enumerator :: par_fS
-    enumerator :: par_2percent_wave_runup
-    enumerator :: reductionFactorForeshore
-end enum
+integer, parameter :: par_fB = 43
+integer, parameter :: par_fN = 44
+integer, parameter :: par_fS = 45
+integer, parameter :: par_2percent_wave_runup = 46
+integer, parameter :: reductionFactorForeshore = 47
 
 contains
 
@@ -278,13 +276,16 @@ select case(language)
             case (xcoordinates_must_increase)
                 GetOvertoppingFormat = '("x-coordinates must increase with dx >= ",F4.1," m")'
             case (zero_or_negative_varModelFactorCriticalOvertopping)
-                GetOvertoppingFormat = '("Negative or zero variance of critical overtopping uncertainty model; variable number: ",I0)'
+                GetOvertoppingFormat = &
+'("Negative or zero variance of critical overtopping uncertainty model; variable number: ",I0)'
             case (zero_or_negative_critical_overtopping)
                 GetOvertoppingFormat = '("Negative or zero critical overtopping: ",G)'
             case (diffx_too_small)
-                GetOvertoppingFormat = '("X-coordinates must differ at least ",F4.2,".",F8.3," and ",F8.3," are too close to each other.")'
+                GetOvertoppingFormat = &
+'("X-coordinates must differ at least ",F4.2,".",F8.3," and ",F8.3," are too close to each other.")'
             case (diffy_too_small)
-                GetOvertoppingFormat = '("Coordinates in vertical direction must be non-decreasing.",F7.2," and ",F7.2," are not.")'
+                GetOvertoppingFormat = &
+'("Coordinates in vertical direction must be non-decreasing.",F7.2," and ",F7.2," are not.")'
             case default
                 write(GetOvertoppingFormat,*) '(Internal error, ID = ', ID, ')'
         end select
@@ -301,11 +302,13 @@ select case(language)
             case (xcoordinates_must_increase)
                 GetOvertoppingFormat = '("x-coordinaten moeten toenemen met dx >= ",F4.1," m")'
             case (zero_or_negative_varModelFactorCriticalOvertopping)
-                GetOvertoppingFormat = '("Negatieve of nul variantie van kritieke overtopping model onzekerheid; variabel nummer: ",I0)'
+                GetOvertoppingFormat = &
+'("Negatieve of nul variantie van kritieke overtopping model onzekerheid; variabel nummer: ",I0)'
             case (zero_or_negative_critical_overtopping)
                 GetOvertoppingFormat = '("Negatieve of nul kritiek overtopping debiet: ",G)'
             case (diffx_too_small)
-                GetOvertoppingFormat = '("X-coordinaten moeten ten minste ",F4.2," van elkaar verschillen.",F8.3," en ",F8.3," ligt te dicht bij elkaar.")'
+                GetOvertoppingFormat = &
+'("X-coordinaten moeten ten minste ",F4.2," van elkaar verschillen.",F8.3," en ",F8.3," ligt te dicht bij elkaar.")'
             case (diffy_too_small)
                 GetOvertoppingFormat = '("Verticale coordinaten mogen niet afnemen.",F7.2," en ",F7.2," doen dat wel.")'
             case default

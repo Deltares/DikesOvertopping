@@ -115,7 +115,8 @@ subroutine calcZValue(criticalOvertoppingRate, modelFactors, Qo, z, success, err
     logical, intent(out)                    :: success                    !< flag for success
 
     !==============================================================================
-    z = zFuncLogRatios(qo, criticalOvertoppingRate, modelFactors%ComputedOvertopping, modelFactors%CriticalOvertopping, success, errorMessage)
+    z = zFuncLogRatios(qo, criticalOvertoppingRate, modelFactors%ComputedOvertopping, &
+                       modelFactors%CriticalOvertopping, success, errorMessage)
 
 end subroutine calcZValue
 
@@ -273,7 +274,8 @@ subroutine omkeerVariantF(load, geometryF, givenDischarge, dikeHeight, modelFact
 !
     type (tpGeometry)                          :: geometry       !< structure with geometry data
 !
-    call iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, overtopping, success, errorText, logging)
+    call iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, &
+                                 overtopping, success, errorText, logging)
 end subroutine omkeerVariantF
 
 !>

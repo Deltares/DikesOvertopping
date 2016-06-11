@@ -21,7 +21,8 @@ contains
 !! Subroutine with omkeerVariant
 !!
 !! @ingroup dllDikesOvertopping
-subroutine iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, overtopping, success, errorText, logging)
+subroutine iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, &
+                                   overtopping, success, errorText, logging)
     use geometryModuleRTOovertopping
     use typeDefinitionsRTOovertopping
     use overtoppingInterface
@@ -54,7 +55,8 @@ subroutine iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, 
                                  geometryF%roughness, geometry, success, errorText)
 
         if (success) then
-            call iterateToGivenDischargeValidProfile(load, geometry, givenDischarge, dikeHeight, modelFactors, overtopping, success, errorText )
+            call iterateToGivenDischargeValidProfile(load, geometry, givenDischarge, dikeHeight, &
+                                                     modelFactors, overtopping, success, errorText )
         else
             call set_nan(dikeHeight)
         endif
@@ -67,7 +69,8 @@ end subroutine iterateToGivenDischarge
 !! Subroutine with iterateToGivenDischarge, with already checked profile
 !!
 !! @ingroup dllDikesOvertopping
-subroutine iterateToGivenDischargeValidProfile(load, geometry, givenDischarge, dikeHeight, modelFactors, overtopping, success, errorText )
+subroutine iterateToGivenDischargeValidProfile(load, geometry, givenDischarge, dikeHeight, &
+                                               modelFactors, overtopping, success, errorText )
     use geometryModuleRTOovertopping
     use typeDefinitionsRTOovertopping
     use overtoppingInterface

@@ -89,7 +89,8 @@ module waveRunup
 
          z2_start(i) = determineStartingValue(i, modelFactors%relaxationFactor, z2_start, z2_end, Hm0)
 
-         z2_end(i) = innerCalculation(geometry, h, Hm0, gammaBeta_z, modelFactors, z2_start(i), s0, geometryFlatBerms, succes, errorMessage)
+         z2_end(i) = innerCalculation(geometry, h, Hm0, gammaBeta_z, modelFactors, z2_start(i), s0, &
+                                      geometryFlatBerms, succes, errorMessage)
 
          ! calculate convergence criterium
          convergence = (abs(z2_start(i) - z2_end(i)) < z2_margin)
@@ -119,7 +120,8 @@ module waveRunup
       
          z2_start(i) = z2k + 2.0_wp * z2_margin * (real(i,wp)-offset)
       
-         z2_end(i) = innerCalculation(geometry, h, Hm0, gammaBeta_z, modelFactors, z2_start(i), s0, geometryFlatBerms, succes, errorMessage)
+         z2_end(i) = innerCalculation(geometry, h, Hm0, gammaBeta_z, modelFactors, z2_start(i), s0, &
+                                      geometryFlatBerms, succes, errorMessage)
 
          ! calculate convergence criterium
          convergence = (abs(z2_start(i) - z2_end(i)) < z2_margin)

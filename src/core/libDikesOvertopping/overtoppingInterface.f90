@@ -22,7 +22,7 @@ module overtoppingInterface
         real(kind=wp)               :: roughness                    !< Roughness of the area between two points
     end type
     
-    type, bind(C) :: OvertoppingGeometryType
+    type :: OvertoppingGeometryType
         real(kind=wp) :: normal
         integer       :: nPoints
         type(c_ptr)   :: xCoords

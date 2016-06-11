@@ -44,7 +44,7 @@
    real(kind=wp), parameter :: fRunup3 = 1.50_wp
    
    !> OvertoppingModelFactors: C-structure with model factors
-   type, public, bind(C) :: tpOvertoppingInput
+   type, public :: tpOvertoppingInput
       real(kind=wp) :: factorDeterminationQ_b_f_n         !< model factor for non-breaking waves
       real(kind=wp) :: factorDeterminationQ_b_f_b         !< model factor for breaking waves
       real(kind=wp) :: m_z2                               !< model factor describing the uncertainty of 2% runup height

@@ -385,7 +385,7 @@
    real(wp),         intent(inout)  :: gammaB         !< influence factor berms
    real(wp),         intent(inout)  :: gammaF         !< influence factor roughness
    real(wp),         intent(inout)  :: gammaBeta      !< influence factor angle of wave attack
-   integer,          intent(in)     :: gammaBetaType  !< type influence factor angle of wave attack: 1 = wave run-up, 2 = overtopping
+   integer,          intent(in)     :: gammaBetaType  !< type influence factor angle of wave attack: 1=wave run-up, 2=overtopping
    real(wp),         intent(in)     :: ksi0           !< breaker parameter
    real(wp),         intent(in)     :: ksi0Limit      !< limit value breaker parameter
    logical,          intent(out)    :: succes         !< flag for succes
