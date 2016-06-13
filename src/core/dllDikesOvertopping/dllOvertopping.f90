@@ -2,9 +2,7 @@
 !!  Main entry for the dll DikesOvertopping
 !!  FUNCTIONS/SUBROUTINES exported from dllOvertopping.dll:
 !!  - calcZValue
-!!  - calculateQo
 !!  - calculateQoF
-!!  - ValidateInputC
 !!  - ValidateInputF
 !!  - omkeerVariantF
 !!  - SetLanguage
@@ -22,50 +20,17 @@ module dllOvertopping
     use geometryModuleRTOovertopping,  only : deallocateGeometry
     use precision,                     only : wp
     use typeDefinitionsRTOovertopping, only : tpGeometry, tpLoad, tpOvertoppingInput
-    use overtoppingInterface,          only : OvertoppingGeometryType, OvertoppingGeometryTypeF
-    use, intrinsic :: iso_c_binding
+    use overtoppingInterface,          only : OvertoppingGeometryTypeF
 
     implicit none
 
     private
 
     !  FUNCTIONS/SUBROUTINES exported from dllOvertoppping.dll:
-    public :: calculateQo, calculateQoF, calcZValue, versionNumber, ValidateInputC, ValidateInputF, &
+    public :: calculateQoF, calcZValue, versionNumber, ValidateInputF, &
               omkeerVariantF, setLanguage, getLanguage
 
 contains
-
-!>
-!! Subroutine that calculates the discharge needed for the Z-function DikesOvertopping
-!! Wrapper for calculateQoF: convert C-like input structures to Fortran input structures
-!!
-!! @ingroup dllDikesOvertopping
-subroutine calculateQo(load, geometryInput, dikeHeight, modelFactors, overtopping, success, errorText, verbosity, logFile)
-!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQo" :: calculateQo
-    use geometryModuleRTOovertopping
-    use typeDefinitionsRTOovertopping
-    use ModuleLogging
-    type(OvertoppingGeometryType), intent(in) :: geometryInput  !< struct with geometry and roughness as c-pointers
-    type(tpLoad), intent(in)                  :: load           !< struct with waterlevel and wave parameters
-    real(kind=wp), intent(in)                 :: dikeHeight     !< dike height
-    type(tpOvertoppingInput), intent(inout)   :: modelFactors   !< struct with modelfactors
-    type (tpOvertopping), intent(out)         :: overtopping    !< structure with overtopping results
-    logical, intent(out)                      :: success        !< flag for success
-    character(len=*), intent(out)             :: errorText      !< error message (only set if not successful)
-    integer, intent(in)                       :: verbosity      !< level of verbosity
-    character(len=*), intent(in)              :: logFile        !< filename of logfile
-
-    type(OvertoppingGeometryTypeF)            :: geometry       !< fortran struct with geometry and roughness
-    type(tLogging)                            :: logging        !< logging struct
-
-    geometry = geometry_c_f(geometryInput)
-
-    logging%verbosity = verbosity
-    logging%filename = logFile
-
-    call calculateQoF(load, geometry, dikeHeight, modelFactors, overtopping, success, errorText, logging)
-
-end subroutine calculateQo
 
 !>
 !! Subroutine that calculates the discharge needed for the Z-function DikesOvertopping
@@ -119,58 +84,6 @@ subroutine calcZValue(criticalOvertoppingRate, modelFactors, Qo, z, success, err
                        modelFactors%CriticalOvertopping, success, errorMessage)
 
 end subroutine calcZValue
-
-!>
-!! Subroutine that validates the geometry
-!! Wrapper for ValidateInputFold: convert C-like input structures to Fortran input structures
-!!
-!! @ingroup dllDikesOvertopping
-subroutine ValidateInputC(geometryInput, dikeHeight, modelFactors, success, errorText)
-!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"ValidateInputC" :: ValidateInputC
-    use geometryModuleRTOovertopping
-    use typeDefinitionsRTOovertopping
-    use errorMessages
-    use OvertoppingMessages
-    type(OvertoppingGeometryType), intent(in) :: geometryInput                 !< struct with geometry and roughness as c-pointers
-    real(kind=wp), intent(in)                 :: dikeHeight                    !< dike height
-    type(tpOvertoppingInput), intent(inout)   :: modelFactors                  !< struct with modelfactors
-    logical, intent(out)                      :: success                       !< flag for success
-    character(len=*), intent(out)             :: errorText                     !< error message (only set if not successful)
-
-    type(OvertoppingGeometryTypeF)            :: geometry                      !< fortran struct with geometry and roughness
-    type(TErrorMessages)                      :: errorStruct
-    integer                                   :: i
-    integer                                   :: nMessages
-    character(len=8)                          :: msgtype
-    character, parameter                      :: separationChar = char(9)      !< use horizontal tab for separation
-
-    geometry = geometry_c_f(geometryInput)
-
-    call initErrorMessages(errorStruct)
-
-    call ValidateInputF(geometry, dikeHeight, modelFactors, errorStruct)
-
-    nMessages = errorStruct%nErrors + errorStruct%nWarnings
-    success = nMessages == 0
-    if (success) then
-        errorText = ' '
-    else
-        do i = 1, nMessages
-            if (errorStruct%messages(i)%severity == severityError) then
-                msgtype = GetOvertoppingMessage(errorIndicator)
-            else
-                msgtype = GetOvertoppingMessage(warningIndicator)
-            endif
-
-            if (i == 1) then
-                errorText = trim(msgtype) // ':' // errorStruct%messages(i)%message
-            else
-                errorText = trim(errorText) // separationChar // trim(msgtype) // ':' // errorStruct%messages(i)%message
-            endif
-        enddo
-    endif
-
-end subroutine ValidateInputC
 
 !>
 !! Subroutine that validates the geometry
@@ -324,31 +237,5 @@ subroutine versionNumber(version)
     endif
 
 end subroutine versionNumber
-
-!>
-!! Private subroutine that converts geometry from c-pointer to fortran struct
-!!
-!! @ingroup dllDikesOvertopping
-function geometry_c_f(geometryInput) result(geometry)
-    use geometryModuleRTOovertopping
-    use typeDefinitionsRTOovertopping
-
-    type(OvertoppingGeometryType), intent(in) :: geometryInput  !< struct with geometry and roughness as c-pointers
-    type(OvertoppingGeometryTypeF)            :: geometry       !< fortran struct with geometry and roughness
-
-    integer                                   :: n(1)           !< dimension definition in c_f_pointer call
-
-    n(1) = geometryInput%nPoints
-
-    call c_f_pointer(geometryInput%xCoords, geometry%xcoords, n)
-    call c_f_pointer(geometryInput%ycoords, geometry%ycoords, n)
-
-    n(1) = geometryInput%nPoints - 1
-    call c_f_pointer(geometryInput%roughness, geometry%roughness, n)
-
-    geometry%npoints = geometryInput%nPoints
-    geometry%normal = geometryInput%normal
-
-end function geometry_c_f
 
 end module dllOvertopping

@@ -610,6 +610,7 @@
 !  local parameters
 !
    integer                                :: ierr           !< number of validation messages
+   character(len=256)                     :: errMsgs(1)     !< local version of errorMessage
 
 ! ==========================================================================================================
 
@@ -646,7 +647,8 @@
    endif
 
    if (succes) then
-      call checkModelFactors (modelFactors, 1, errorMessage, ierr)
+      call checkModelFactors (modelFactors, 1, errMsgs, ierr)
+      errorMessage = errMsgs(1)
       succes = (ierr == 0)
    endif
 

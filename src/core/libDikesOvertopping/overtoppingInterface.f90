@@ -12,7 +12,6 @@
 !<
 module overtoppingInterface
     use precision, only : wp
-    use, intrinsic :: iso_c_binding
     
     integer, parameter :: varModelFactorCriticalOvertopping =   8   !< Model factor critical overtopping
 
@@ -22,14 +21,6 @@ module overtoppingInterface
         real(kind=wp)               :: roughness                    !< Roughness of the area between two points
     end type
     
-    type :: OvertoppingGeometryType
-        real(kind=wp) :: normal
-        integer       :: nPoints
-        type(c_ptr)   :: xCoords
-        type(c_ptr)   :: yCoords
-        type(c_ptr)   :: roughness
-    end type OvertoppingGeometryType
-
     type :: OvertoppingGeometryTypeF
         real(kind=wp)          :: normal
         integer                :: nPoints
@@ -40,6 +31,6 @@ module overtoppingInterface
 
     private
     
-    public :: tpProfileCoordinate, OvertoppingGeometryType, OvertoppingGeometryTypeF, varModelFactorCriticalOvertopping
+    public :: tpProfileCoordinate, OvertoppingGeometryTypeF, varModelFactorCriticalOvertopping
 
 end module overtoppingInterface
