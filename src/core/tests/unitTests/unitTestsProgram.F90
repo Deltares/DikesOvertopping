@@ -31,19 +31,6 @@ program unitTestsProgram
 
 contains
 
-!> Routine to be called when tests are started
-subroutine initTestProgram
-    ! Set action for feedback when a fatal error occurs
-    implicit none
-    continue ! intended empty subroutine
-end subroutine initTestProgram
-
-!> Routine to be called when single tests are started
-subroutine initTest
-    implicit none
-    continue ! intended empty subroutine
-end subroutine initTest
-
 !> Routine to start the testing
 !! Note:
 !!     This routine merely takes care that the unit tests
@@ -52,12 +39,6 @@ subroutine prepareTests
     implicit none
 
     integer  :: lun   !< LU-number
-    
-    ! Initialization called from ftnunit before running tests
-    subptrTestProgramInit => initTestProgram
-    
-    ! Initialization called from ftnunit before running each separate test
-    subptrTestInit => initTest
     
     call getFreeLuNumber( lun )
     open( lun, file = 'ftnunit.run' )

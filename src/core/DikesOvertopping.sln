@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "dllDikesOvertopping", "dllDikesOvertopping\dllDikesOvertopping.vfproj", "{7A17AB03-B82C-4262-82A6-8C210446685B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{42CC4E82-3D8A-46C8-8C2E-C0D949081D46} = {42CC4E82-3D8A-46C8-8C2E-C0D949081D46}
@@ -14,9 +14,6 @@ Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "general", "general.vfproj",
 	EndProjectSection
 EndProject
 Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "feedback", "feedback.vfproj", "{CFA0E06E-8B80-4EBF-8D86-7AAE1078CB6E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{42CC4E82-3D8A-46C8-8C2E-C0D949081D46} = {42CC4E82-3D8A-46C8-8C2E-C0D949081D46}
-	EndProjectSection
 EndProject
 Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "unitTests", "tests\unitTests\unitTests.vfproj", "{17BFEA15-7F4A-4395-B99B-0D7508BA29FE}"
 	ProjectSection(ProjectDependencies) = postProject
