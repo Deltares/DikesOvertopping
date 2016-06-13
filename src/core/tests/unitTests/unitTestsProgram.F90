@@ -12,12 +12,7 @@ program unitTestsProgram
     use utilities
     use overtoppingRTOTests
 
-    use, intrinsic :: ieee_exceptions
-
     implicit none
-
-    ! Enable following line to catch division by zero
-    ! call ieee_set_halting_mode( IEEE_DIVIDE_BY_ZERO, .true. )
 
     call prepareTests
 
