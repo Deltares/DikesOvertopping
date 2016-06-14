@@ -1,4 +1,7 @@
 * text=auto !eol
+CVF_libs/Release/dllDikesOvertopping.dll -text
+CVF_libs/Release/dllDikesOvertopping.lib -text
+CVF_libs/Release/unitTests.exe -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]Documentation.pdf -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]design.docx -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]design.pdf -text
@@ -28,8 +31,17 @@ doc/doxygen/DoxygenLayout.xml -text
 doc/doxygen/RunDoxygen.bat -text
 extern/Utils/svn_insert_version.cmd -text
 release/dllDikesOvertopping.dll -text
+src/core/DikesOvertopping.dsw -text
+src/core/dllDikesOvertopping/dllDikesOvertopping.dsp -text
+src/core/feedback.dsp -text
+src/core/ftnunit.dsp -text
+src/core/general.dsp -text
+src/core/libDikesOvertopping/LibOvertopping.dsp -text
 src/core/teamcity.bat -text
+src/core/tests/DikesOvertoppingTests/DikesOvertoppingTests.dsp -text
 src/core/tests/unitTests/runtests.bat -text
+src/core/tests/unitTests/unitTests.dsp -text
+src/core/tools.dsp -text
 src/wrappers/OvertoppingCalculationTest.cs -text
 src/wrappers/TestRunner/App.config -text
 src/wrappers/TestRunner/Program.cs -text

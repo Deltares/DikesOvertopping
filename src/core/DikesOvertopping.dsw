@@ -1,0 +1,149 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "CoreLibs_feedback"=.\feedback.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_general
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CoreLibs_ftnunit"=.\ftnunit.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CoreLibs_general"=.\general.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_tools
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CoreLibs_tools"=.\tools.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LibOvertopping"=.\libDikesOvertopping\LibOvertopping.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_feedback
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Tests_DikesOvertoppingTests"=.\tests\DikesOvertoppingTests\DikesOvertoppingTests.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name dllDikesOvertopping
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Tests_unitTests"=.\tests\unitTests\unitTests.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_ftnunit
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name dllDikesOvertopping
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_feedback
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_general
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CoreLibs_tools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LibOvertopping
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Tests_DikesOvertoppingTests
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "dllDikesOvertopping"=.\dllDikesOvertopping\dllDikesOvertopping.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LibOvertopping
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
