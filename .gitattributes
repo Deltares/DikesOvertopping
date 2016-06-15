@@ -1,7 +1,4 @@
 * text=auto !eol
-CVF_libs/Release/dllDikesOvertopping.dll -text
-CVF_libs/Release/dllDikesOvertopping.lib -text
-CVF_libs/Release/unitTests.exe -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]Documentation.pdf -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]design.docx -text
 doc/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]design.pdf -text
