@@ -32,6 +32,8 @@ doc/doxygen/RunDoxygen.bat -text
 extern/Utils/svn_insert_version.cmd -text
 release/compag/dllDikesOvertopping.dll -text
 release/compag/dllDikesOvertopping.lib -text
+release/compaq/dllDikesOvertopping.dll -text
+release/compaq/dllDikesOvertopping.lib -text
 release/intel/dllDikesOvertopping.dll -text
 release/intel/dllDikesOvertopping.lib -text
 src/core/DikesOvertopping.dsw -text
