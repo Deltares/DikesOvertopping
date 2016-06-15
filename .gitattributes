@@ -30,7 +30,10 @@ doc/doxygen/DikesOvertoppingFortran.doxyfile -text
 doc/doxygen/DoxygenLayout.xml -text
 doc/doxygen/RunDoxygen.bat -text
 extern/Utils/svn_insert_version.cmd -text
-release/dllDikesOvertopping.dll -text
+release/compag/dllDikesOvertopping.dll -text
+release/compag/dllDikesOvertopping.lib -text
+release/intel/dllDikesOvertopping.dll -text
+release/intel/dllDikesOvertopping.lib -text
 src/core/DikesOvertopping.dsw -text
 src/core/dllDikesOvertopping/dllDikesOvertopping.dsp -text
 src/core/feedback.dsp -text
