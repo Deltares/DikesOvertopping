@@ -156,7 +156,7 @@ subroutine iterateToGivenDischargeValidProfile(load, geometry, givenDischarge, d
         if (isValidZ(i)) then
             if (equalRealsRelative(givenDischarge , dischargeProfile(i) , tolDischarge )) then
                 success = .true.
-                dikeHeight = geometry%yCoordinates(i)
+                dikeHeight = ZProfile(i)
                 overtopping%Qo = dischargeProfile(i)
                 foundValue = .true.
             else if (givenDischarge < dischargeProfile(i)) then
@@ -236,12 +236,13 @@ subroutine checkIfOnBerm(geometry, load, modelfactors, overtopping, givenDischar
     !
     ! locals
     !
-    integer        :: i               ! loop counter
-    integer        :: ierr            ! error code
-    integer        :: nPoints         ! number of profile points
-    real(kind=wp)  :: nextDikeheight  ! dike heigth for next calculation
-    real(kind=wp)  :: X(2)            ! argument for logInterpolate
-    real(kind=wp)  :: Y(2)            ! argument for logInterpolate
+    integer                  :: i               ! loop counter
+    integer                  :: ierr            ! error code
+    integer                  :: nPoints         ! number of profile points
+    real(kind=wp)            :: nextDikeheight  ! dike heigth for next calculation
+    real(kind=wp)            :: X(2)            ! argument for logInterpolate
+    real(kind=wp)            :: Y(2)            ! argument for logInterpolate
+    real(kind=wp), parameter :: eps = 1e-4_wp   ! epsilon for waterlevel near berm
     !
     ! check: possibly on berm
     !
@@ -266,7 +267,7 @@ subroutine checkIfOnBerm(geometry, load, modelfactors, overtopping, givenDischar
                         X = (/ dischargeProfile(iLow), dischargeProfile(i) /)
                         Y = (/ ZProfile(iLow), ZProfile(i) /)
                     else
-                        nextDikeHeight = ZProfile(i) - minZberm
+                        nextDikeHeight = max(load%H + eps, ZProfile(i) - minZberm)
                         call calculateQoRTO(nextDikeHeight, modelFactors, overtopping, load, geometry, success, errorText )
                         if (.not. success) return ! only in very exceptional cases
                         X = (/ overtopping%Qo, dischargeProfile(i) /)
