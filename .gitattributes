@@ -30,8 +30,6 @@ extern/Utils/svn_insert_version.cmd -text
 release/compaq/DFORRT.DLL -text
 release/compaq/dllDikesOvertopping.dll -text
 release/compaq/dllDikesOvertopping.lib -text
-release/intel/dllDikesOvertopping.dll -text
-release/intel/dllDikesOvertopping.lib -text
 src/core/DikesOvertopping.dsw -text
 src/core/dllDikesOvertopping/dllDikesOvertopping.dsp -text
 src/core/feedback.dsp -text
