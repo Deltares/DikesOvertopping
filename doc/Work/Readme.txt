@@ -1,1 +1,0 @@
-Miscellaneous working documents required during development stages (project plans, progress reports, status reports, review reports etc.)
