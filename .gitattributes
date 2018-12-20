@@ -214,6 +214,8 @@ extern/dikeovertopping-viewer/src/static/logo-rijkswaterstaat.svg -text
 extern/dikeovertopping-viewer/src/store/index.js -text
 release/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]Documentation.pdf -text
 release/LicenseAGPL.txt -text
+release/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]kernel-Test[!!-~]plan.pdf -text
+release/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]kernel-Test[!!-~]report[!!-~]18.1.1.pdf -text
 release/dllDikesOvertopping.dll -text
 release/dllDikesOvertopping.lib -text
 src/core/teamcity.bat -text
