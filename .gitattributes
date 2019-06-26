@@ -25,6 +25,8 @@ doc/doxygen/RunDoxygen.bat -text
 extern/Utils/svn_insert_version.cmd -text
 release/Dikes[!!-~]Overtopping[!!-~]Kernel[!!-~]-[!!-~]Technical[!!-~]Documentation.pdf -text
 release/LicenseAGPL.txt -text
+release/PvO[!!-~]DikesOvertopping[!!-~]19.1.1.pdf -text
+release/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]-[!!-~]Kernel[!!-~]-[!!-~]Test[!!-~]report.pdf -text
 release/win32/dllDikesOvertopping.dll -text
 release/win32/dllDikesOvertopping.lib -text
 release/win32/winapi.dll -text
