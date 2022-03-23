@@ -5,7 +5,7 @@ doc/Overtopping[!!-~]Kernel[!!-~]-[!!-~]Test[!!-~]report.docx -text
 doc/Release[!!-~]notes[!!-~]Dikes[!!-~]Overtopping.docx -text
 doc/ScientDoc/TRRunupOvertopping.pdf -text svneol=unset#unset
 doc/ScientDoc/technischrapportgolfoploopengolfoverslagbijdijken.pdf -text
-doc/TestReportAppendixA.pdf -text
+doc/TestReportAppendixA.pdf -text svneol=unset#unset
 doc/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]-[!!-~]Kernel[!!-~]-[!!-~]Functional[!!-~]design.docx -text
 doc/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]-[!!-~]Kernel[!!-~]-[!!-~]Test[!!-~]plan.docx -text
 doc/Wave[!!-~]overtopping[!!-~]at[!!-~]dikes[!!-~]-[!!-~]Kernel[!!-~]-[!!-~]Test[!!-~]report.docx -text
@@ -35,13 +35,17 @@ release/lnx64/libiomp5.so -text
 release/win32/dllDikesOvertopping.dll -text
 release/win32/dllDikesOvertopping.lib -text
 release/win32/feedbackDLL.dll -text
+release/win32/libiomp5md.dll -text
 release/x64/dllDikesOvertopping.dll -text
 release/x64/dllDikesOvertopping.lib -text
 release/x64/feedbackDLL.dll -text
+release/x64/libiomp5md.dll -text
 src/CreateSigExport.ps1 -text
 src/core/CMakeLists.txt -text
 src/core/external/CMakeLists.txt -text
 src/core/external/feedbackDLL.vfproj -text
+src/core/external/intel/win32/libiomp5md.dll -text
+src/core/external/intel/x64/libiomp5md.dll -text
 src/core/external/throwexception.f90 -text
 src/core/external/versionInfo.f90 -text
 src/core/libDikesOvertopping/submAdjInfluenceFactors.f90 -text
