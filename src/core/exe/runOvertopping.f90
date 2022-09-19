@@ -6,12 +6,13 @@ program runOvertopping
     use ModuleLogging
     use errorMessages
     use geometryModuleOvertopping
+    use zFunctionsOvertopping
     implicit none
     character(len=256) :: infile, errorText
     integer :: iunit, nPoints, ierr
     double precision:: dikeHeight, psi
     double precision, allocatable :: roughnessFactors(:)
-    type(tpCoordinatePair) :: coordinates
+    type(tpCoordinatePair) :: coordinates, coordinatesAdj
     type(tpLoad) :: load           !< struct with waterlevel and wave parameters
     type(tpGeometry) :: geometry       !< fortran struct with geometry and roughness
     type(tpOvertoppingInput) :: modelFactors   !< struct with modelfactors
@@ -42,9 +43,11 @@ program runOvertopping
     end if
     close(iunit)
 
-    coordinates%y(nPoints) = dikeHeight
     coordinates%n = nPoints
-    call initializeGeometry (psi, coordinates, roughnessFactors(1:coordinates%N-1), geometry, error)
+    call profileInStructure(coordinates, dikeHeight, coordinatesAdj, error)
+    if (error%errorCode == 0) then
+        call initializeGeometry (psi, coordinatesAdj, roughnessFactors(1:coordinates%N-1), geometry, error)
+    end if
 
     modelFactors%factorDeterminationQ_b_f_n = 1.0d0
     modelFactors%factorDeterminationQ_b_f_b = 1.0d0
@@ -55,7 +58,10 @@ program runOvertopping
     modelFactors%relaxationFactor           = 1.0d0
     modelFactors%reductionFactorForeshore   = 0.5d0
 
-    if (error%errorCode == 0) call calculateOvertopping (geometry, load, modelFactors, overtopping, error)
+    if (error%errorCode == 0) then
+        call calculateOvertopping (geometry, load, modelFactors, overtopping, error)
+    end if
+
     if (error%errorCode == 0) then
         write(*,*) 'z-2% = ', overtopping%z2
     else
