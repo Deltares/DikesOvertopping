@@ -106,6 +106,11 @@ add_executable(unitTestProgram
 
 target_link_libraries(unitTestProgram DikesOvertoppingLib HRtools FeedbackDll Feedback)
 
+add_executable(runOvertopping
+    exe/runOvertopping.f90
+)
+target_link_libraries(runOvertopping DikesOvertoppingLib FeedbackDll Feedback)
+
 enable_testing()
 
 add_test(
