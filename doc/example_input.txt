@@ -17,4 +17,19 @@ De dijknormaal
 De dijkhoogte
 De load: waterstand, hs, tp, golfhoek
 
+voor de model factors:
+2.3
+4.3
+1.0
+0.6778
+1.0
+1e-3
+
+met respectivelijk:
+factorDeterminationQ_b_f_n
+factorDeterminationQ_b_f_b
+m_z2
+fshallow
+ComputedOvertopping
+CriticalOvertopping
 
