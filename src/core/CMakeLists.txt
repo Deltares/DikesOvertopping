@@ -79,17 +79,24 @@ set_target_properties(DikesOvertoppingLib
 
 target_link_libraries(DikesOvertoppingLib FeedbackDll Feedback HRgeneral)
 
-add_library(DikesOvertopping
+
+if(WIN32)
+    set(sharedLibName dllDikesOvertopping)
+else()
+    set(sharedLibName DikesOvertopping)
+endif()
+
+add_library(${sharedLibName}
   SHARED
     dllDikesOvertopping/dllOvertopping.f90
 )
 
-set_target_properties(DikesOvertopping
+set_target_properties(${sharedLibName}
     PROPERTIES
       POSITION_INDEPENDENT_CODE 1
 )
 
-target_link_libraries(DikesOvertopping DikesOvertoppingLib FeedbackDll Feedback HRtools)
+target_link_libraries(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
 
 add_executable(unitTestProgram
     tests/DikesOvertoppingTests/crossSectionsTests.f90
