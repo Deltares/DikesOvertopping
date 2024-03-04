@@ -312,7 +312,7 @@ subroutine ValidateInputJ(x, y, roughness, normal, nPoints, dikeHeight, modelFac
     real(kind=wp), intent(in)                 :: normal                        !< dike normal
     real(kind=wp), intent(in)                 :: dikeHeight                    !< dike height
     real(kind=wp), intent(in)                 :: modelFactorsArray(8)          !< array with modelfactors
-    logical, intent(out)                      :: success                       !< flag for success
+    logical(kind=1), intent(out)              :: success                       !< flag for success
     character(len=1), intent(out)             :: errorText(msgLength)          !< error message (only set if not successful)
 
     type(tpOvertoppingInput)                  :: modelFactors                  !< struct with modelfactors
@@ -323,6 +323,14 @@ subroutine ValidateInputJ(x, y, roughness, normal, nPoints, dikeHeight, modelFac
     integer                                   :: nMessages
     character(len=8)                          :: msgtype
     character(len=msgLength)                  :: msg
+
+    write(*,*) "got npoints = ", npoints
+    write(*,*) "x = ", x
+    write(*,*) "y = ", y
+    write(*,*) "roughness = ", roughness
+    write(*,*) "dikeHeight = ", dikeHeight
+    write(*,*) "normal = ", normal
+    write(*,*) "modelFactors = ", modelFactors
 
     allocate(geometry%xCoords(nPoints), geometry%yCoords(nPoints), geometry%roughness(nPoints-1), stat=ierr)
     if (ierr /= 0) then
@@ -359,6 +367,8 @@ subroutine ValidateInputJ(x, y, roughness, normal, nPoints, dikeHeight, modelFac
     do i = 1, msgLength
         errorText(i) = msg(i:i)
     end do
+    write(*,*) "validate success = ", success
+    if ( .not. success) write(*,*) trim(msg)
 
 end subroutine ValidateInputJ
 
