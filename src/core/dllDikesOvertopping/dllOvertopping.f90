@@ -330,7 +330,7 @@ subroutine ValidateInputJ(x, y, roughness, normal, nPoints, dikeHeight, modelFac
     write(*,*) "roughness = ", roughness
     write(*,*) "dikeHeight = ", dikeHeight
     write(*,*) "normal = ", normal
-    write(*,*) "modelFactors = ", modelFactors
+    write(*,*) "modelFactors = ", modelFactorsArray
 
     allocate(geometry%xCoords(nPoints), geometry%yCoords(nPoints), geometry%roughness(nPoints-1), stat=ierr)
     if (ierr /= 0) then
