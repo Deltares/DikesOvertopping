@@ -153,7 +153,7 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     write(*,*) "y = ", ycoords
     write(*,*) "dikeHeight = ", dikeHeight
     write(*,*) "normal = ", normal
-    write(*,*) "modelFactorsF = ", modelFactorsF
+    write(*,*) "modelFactors = ", modelFactors
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1), stat=ierr)
     if (ierr == 0) then
         call input_j_f(xcoords, ycoords, roughness, normal, geometryF, modelFactors, modelFactorsF, load, loadF)
@@ -169,6 +169,7 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     do i = 1, msgLength
         errorMessage(i) = msg(i:i)
     end do
+    write(*,*) output
 end subroutine calculateQoJ
 !>
 !! Subroutine that calculates the discharge needed for the Z-function DikesOvertopping
