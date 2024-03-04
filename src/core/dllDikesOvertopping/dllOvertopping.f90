@@ -129,7 +129,7 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     integer, intent(in)                        :: npoints               !< the number of coordinates
     real(kind=wp), intent(in)                  :: dikeHeight            !< dike height
     real(kind=wp), intent(in)                  :: normal                !< dike normal
-    logical, intent(out)                       :: succes                !< flag for success
+    logical(kind=1), intent(out)               :: succes                !< flag for success
     character(len=1), intent(out)              :: errorMessage(msgLength) !< error message (only set if not successful)
     real(kind=wp), intent(in)                  :: load(4)               !< input load (wl and 3 wave numbers)
     real(kind=wp), intent(in)                  :: xcoords(npoints)      !< the x coordinates
@@ -146,6 +146,7 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     integer                        :: ierr           !< error code of allocate
     integer                        :: i              !< loop counter
     character(len=msgLength)       :: msg            !< error message as Fortran string
+    logical                        :: succesF        !< 4 byte succes flag
 
     write(*,*) "got npoints = ", npoints
     write(*,*) "load = ", load
@@ -157,7 +158,8 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1), stat=ierr)
     if (ierr == 0) then
         call input_j_f(xcoords, ycoords, roughness, normal, geometryF, modelFactors, modelFactorsF, load, loadF)
-        call calculateQoF(loadF, geometryF, dikeHeight, modelFactorsF, overtopping, succes, msg, logging)
+        call calculateQoF(loadF, geometryF, dikeHeight, modelFactorsF, overtopping, succesF, msg, logging)
+        succes = succesF
         output(1) = overtopping%Qo
         output(2) = overtopping%z2
     else
@@ -170,6 +172,8 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
         errorMessage(i) = msg(i:i)
     end do
     write(*,*) output
+    write(*,*) 'succes= ', succes
+    if ( .not. succes) write(*,*) "msg = ", trim(msg)
 end subroutine calculateQoJ
 !>
 !! Subroutine that calculates the discharge needed for the Z-function DikesOvertopping
