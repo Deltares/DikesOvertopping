@@ -146,7 +146,14 @@ subroutine calculateQoJ(load, xcoords, ycoords, roughness, normal, npoints, dike
     integer                        :: ierr           !< error code of allocate
     integer                        :: i              !< loop counter
     character(len=msgLength)       :: msg            !< error message as Fortran string
-    
+
+    write(*,*) "got npoints = ", npoints
+    write(*,*) "load = ", load
+    write(*,*) "x = ", xcoords
+    write(*,*) "y = ", ycoords
+    write(*,*) "dikeHeight = ", dikeHeight
+    write(*,*) "normal = ", normal
+    write(*,*) "modelFactorsF = ", modelFactorsF
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1), stat=ierr)
     if (ierr == 0) then
         call input_j_f(xcoords, ycoords, roughness, normal, geometryF, modelFactors, modelFactorsF, load, loadF)
