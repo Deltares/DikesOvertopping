@@ -3,7 +3,6 @@ program runOvertopping
     use typeForLoad
     use overtoppingInterface
     use typeDefinitionsOvertopping
-    use ModuleLogging
     use errorMessages
     use geometryModuleOvertopping
     use zFunctionsOvertopping
@@ -18,7 +17,6 @@ program runOvertopping
     type(tpGeometry), target :: geometry       !< fortran struct with geometry and roughness
     type(tpOvertoppingInput) :: modelFactors   !< struct with modelfactors
     type(tpOvertopping) :: overtopping, overtopping2
-    type(tLogging)      :: logging
     logical             :: success
     type(tMessage)      :: error
     type(OvertoppingGeometryTypeF) :: geometryF
