@@ -382,9 +382,7 @@ subroutine ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     success = .true.
     errorText = ' '
 
-    if (success) then
-        call basicGeometryValidation(geometryF, success, errorStruct)
-    endif
+    call basicGeometryValidation(geometryF, success, errorStruct)
 
     if (success) then
         coordinates%N = geometryF%npoints

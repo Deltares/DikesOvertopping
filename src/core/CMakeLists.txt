@@ -124,7 +124,7 @@ enable_testing()
 
 add_test(
   NAME overtopping-unit-tests
-  COMMAND $<TARGET_FILE:unitTestProgram> /s 1
+  COMMAND $<TARGET_FILE:unitTestProgram> /s 3
   WORKING_DIRECTORY ../tests/unitTests
 )
 

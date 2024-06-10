@@ -420,9 +420,9 @@ subroutine overtoppingValidationRoughnessTest
     criticalOvertoppingRate        = 1.0d-3
 
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
-    geometryF%xcoords = [ 0, 10, 20, 30, 40 ]
-    geometryF%ycoords = [-5, 0, 5, 6, 7]
-    geometryF%roughness = [ 0.0, 0.5, 0.5, 0.5 ]
+    geometryF%xcoords = [ 0.0_wp, 10.0_wp, 20.0_wp, 30.0_wp, 40.0_wp ]
+    geometryF%ycoords = [-5.0_wp, 0.0_wp, 5.0_wp, 6.0_wp, 7.0_wp]
+    geometryF%roughness = [ 0.0_wp, 0.5_wp, 0.5_wp, 0.5_wp ]
     
     geometryF%normal = 60.0_wp ! degrees
     geometryF%npoints = npoints
@@ -715,7 +715,7 @@ subroutine TestIssue45
     type(TErrorMessages)           :: errorStruct
     character(len=2)               :: lang
 
-    call GetLanguage(lang)
+    call GetLanguageDll(lang)
     call SetLanguageDll('NL')
     npoints = 6
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
