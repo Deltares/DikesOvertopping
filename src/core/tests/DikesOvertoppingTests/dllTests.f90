@@ -349,7 +349,6 @@ end subroutine LoadNaNTest
 !!
 !! @ingroup DikeOvertoppingTests
 subroutine overtoppingValidationTest
-    use overtoppingMessages
     integer, parameter             :: npoints = 5
     type(OvertoppingGeometryTypeF) :: geometryF
     real(kind=wp)                  :: dikeHeight
@@ -386,7 +385,7 @@ subroutine overtoppingValidationTest
     !
     geometryF%ycoords = [-5, 0, 5, 6, 7]
     modelFactors%m_z2     = -1.00_wp
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     
     call assert_equal(errorStruct%messages(4)%message, 'Model factor 2% wave runup smaller than  0.000', 'error handling')
@@ -430,7 +429,7 @@ subroutine overtoppingValidationRoughnessTest
     !
     ! do validation of input (geometry not correct) :
     !
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     
     call assert_equal(errorStruct%messages(1)%message, 'Ruwheidsfactoren moeten liggen tussen 0.5 ... 1.0; gevonden:  0.00', 'error handling')
@@ -474,7 +473,7 @@ subroutine overtoppingMultipleValidationTest
     ! do validation of input :
     !
     call initErrorMessages(errorStruct)
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
 
     call assert_equal(4, errorStruct%nErrors, 'expected 4 validation errors')
@@ -517,9 +516,9 @@ subroutine overtoppingValidationTestZPoints
     ! do validation of input :
     !
     call initErrorMessages(errorStruct)
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
 
     call assert_equal(2, errorStruct%nErrors, 'expected 2 validation errors')
@@ -528,9 +527,9 @@ subroutine overtoppingValidationTestZPoints
     
     geometryF%xcoords = [ 0d0, 40d0, 40.019d0 ]
     geometryF%ycoords = [-10d0, 0d0, 10d0]
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     call assert_equal(4, errorStruct%nErrors, 'expected 4 (total) validation errors')
     call assert_equal(errorStruct%messages(3)%message, 'X-coordinaten moeten ten minste 0.02 van elkaar verschillen.  40.000 en   40.019 ligt te dicht bij elkaar.', 'error handling')
@@ -538,15 +537,15 @@ subroutine overtoppingValidationTestZPoints
 
     geometryF%xcoords = [ 0d0, 40d0, 40.0201d0 ]
     geometryF%ycoords = [ 0d0, 9.9d0, 9.91d0]
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     call assert_equal(4, errorStruct%nErrors, 'expected 4 (total) validation errors')
 
     geometryF%xcoords = [ 0d0, 40d0, 39.0d0 ]
     geometryF%ycoords = [-10d0, 0d0, 10d0]
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     call assert_equal(6, errorStruct%nErrors, 'expected 6 (total) validation errors')
     call assert_equal(errorStruct%messages(5)%message, 'X-coordinaten moeten ten minste met 0.02 toenemen.  40.000 en   39.000 voldoen hier niet aan.', 'error handling')
@@ -583,9 +582,9 @@ subroutine overtoppingValidationTestInvalidSlope
     ! do validation of input :
     !
     call initErrorMessages(errorStruct)
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
 
     call assert_equal(2, errorStruct%nErrors, 'expected 2 validation errors')
@@ -717,7 +716,7 @@ subroutine TestIssue45
     character(len=2)               :: lang
 
     call GetLanguage(lang)
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     npoints = 6
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
     geometryF%npoints = npoints
@@ -739,7 +738,7 @@ subroutine TestIssue45
     call assert_equal(errorStruct%nErrors, 1, "expect 1 error message about berms")
     call assert_equal(errorStruct%messages(1)%message, 'Eerste segment is een berm. Dat is niet toegestaan.', 'error in validation message')
 
-    call SetLanguage(lang)
+    call SetLanguageDll(lang)
 
 end subroutine TestIssue45
 

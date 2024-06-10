@@ -58,7 +58,8 @@ module dllOvertopping
 
     !  FUNCTIONS/SUBROUTINES exported from dllOvertoppping.dll:
     public :: calculateQo, calculateQoF, calcZValue, versionNumber, ValidateInputC, ValidateInputF, &
-              omkeerVariantF, calculateQoJ, ValidateInputJ, omkeerVariantJ
+              omkeerVariantF, calculateQoJ, ValidateInputJ, omkeerVariantJ, &
+              setLanguageDll, getLanguageDll
 
     character, parameter :: separationChar = char(9)      !< use horizontal tab for separation
     integer, parameter   :: msgLength = 256
@@ -625,5 +626,21 @@ subroutine input_j_f(x, y, roughness, normal, geometryF, modelFactorsJ, modelFac
         loadF%phi   = loadJ(4)
     endif
 end subroutine input_j_f
+
+! set language function such that test code sets the language in the dll
+subroutine setLanguageDll(lang)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"setLanguageDll" :: setLanguageDll
+    use overtoppingMessages
+    character(len=*) :: lang
+    call setLanguage(lang)
+end subroutine setLanguageDll
+
+! get language function such that test code gets the language in the dll
+subroutine getLanguageDll(lang)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"getLanguageDll" :: getLanguageDll
+    use overtoppingMessages
+    character(len=*) :: lang
+    call getLanguage(lang)
+end subroutine getLanguageDll
 
 end module dllOvertopping

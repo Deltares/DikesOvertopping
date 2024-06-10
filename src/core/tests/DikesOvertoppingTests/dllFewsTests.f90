@@ -53,7 +53,6 @@ end subroutine allOvertoppingDllFewsTests
 
 !! @ingroup DikeOvertoppingTests
 subroutine TestCalculateQoJ
-    integer(kind=pntlen)           :: p
     integer                        :: i
     logical                        :: succes
     integer, parameter             :: npoints = 3
@@ -128,7 +127,7 @@ subroutine overtoppingValidationFewsTest
     !
     ! initializations
     !
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call init_modelfactors_and_load(modelFactors)
     call convertJ(modelFactors, modelFactorsArray)
 
@@ -149,7 +148,7 @@ subroutine overtoppingValidationFewsTest
     !
     ycoords = [-5, 0, 5, 6, 7]
     modelFactorsArray(3)     = -1.00_wp
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputJ(xcoords, ycoords, roughness, normal, nPoints, dikeHeight, modelFactorsArray, success, errorMsg)
     call assert_false(success, "expect failure")
     loc = index(errorMsg, 'Model factor 2% wave runup smaller than  0.000')
