@@ -30,12 +30,11 @@
 !!
 !! @ingroup DikeOvertoppingTests
 module dllFewsTests
+use dllOvertopping
 use precision, only : wp, pntlen
 use typeDefinitionsOvertopping
 use testHelper, only : init_modelfactors_and_load
 use ftnunit
-use user32
-use kernel32
 
 implicit none
 
@@ -55,7 +54,6 @@ end subroutine allOvertoppingDllFewsTests
 !! @ingroup DikeOvertoppingTests
 subroutine TestCalculateQoJ
     integer(kind=pntlen)           :: p
-    external                       :: calculateQoJ
     integer                        :: i
     logical                        :: succes
     integer, parameter             :: npoints = 3
@@ -73,11 +71,6 @@ subroutine TestCalculateQoJ
     real(kind=wp)                  :: output(2)
     real(kind=wp), parameter       :: margin     =  0.00001_wp
 
-
-    pointer            (qc, calculateQoJ)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qc = getprocaddress (p, "calculateQoJ"C)
     !
     ! initializations
     !
@@ -118,8 +111,7 @@ end subroutine TestCalculateQoJ
 !!
 !! @ingroup DikeOvertoppingTests
 subroutine overtoppingValidationFewsTest
-    integer(kind=pntlen)           :: p
-    external                       :: ValidateInputJ, SetLanguage
+    use overtoppingMessages
     integer, parameter             :: npoints = 5
     real(kind=wp)                  :: xcoords(nPoints)
     real(kind=wp)                  :: ycoords(nPoints)
@@ -133,12 +125,6 @@ subroutine overtoppingValidationFewsTest
     logical                        :: success
     character(len=256)             :: errorMsg
 
-    pointer            (qvalidate, ValidateInputJ)
-    pointer            (qsl, SetLanguage)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qvalidate = getprocaddress (p, "ValidateInputJ"C)
-    qsl = getprocaddress (p, "SetLanguage"C)
     !
     ! initializations
     !
@@ -186,8 +172,6 @@ end subroutine overtoppingValidationFewsTest
 !!
 !! @ingroup DikeOvertoppingTests
 subroutine overtoppingValidationFewsTest2
-    integer(kind=pntlen)           :: p
-    external                       :: ValidateInputJ, SetLanguage
     integer, parameter             :: npoints = 2
     real(kind=wp)                  :: xcoords(nPoints)
     real(kind=wp)                  :: ycoords(nPoints)
@@ -200,12 +184,6 @@ subroutine overtoppingValidationFewsTest2
     logical                        :: success
     character(len=256)             :: errorMsg
 
-    pointer            (qvalidate, ValidateInputJ)
-    pointer            (qsl, SetLanguage)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qvalidate = getprocaddress (p, "ValidateInputJ"C)
-    qsl = getprocaddress (p, "SetLanguage"C)
     !
     ! initializations
     !
@@ -225,8 +203,6 @@ end subroutine overtoppingValidationFewsTest2
 !> test for omkeerVariantJ
 !! @ingroup DikeOvertoppingTests
 subroutine omkeerVariantTestJ
-    integer(kind=pntlen)           :: p
-    external                       :: omkeerVariantJ
     integer                        :: i
     logical                        :: succes
     integer, parameter             :: npoints = 3
@@ -243,13 +219,6 @@ subroutine omkeerVariantTestJ
     real(kind=wp)                  :: modelFactors(8)
     real(kind=wp), parameter       :: givenDischarge = 0.8d-8  !< discharge to iterate to
 
-    pointer            (q, omkeerVariantJ)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    call assert_true(p /= 0, 'load dllDikesOvertopping.dll')
-    q = getprocaddress (p, "omkeerVariantJ"C)
-    call assert_true(q /= 0, 'get function pointer to omkeerVariantJ')
-    if (q == 0) return
     !
     ! initializations
     !
@@ -286,12 +255,12 @@ subroutine convertJ(modelFactors, modelFactorsArray, load, loadArray)
     modelFactorsArray(6) = modelFactors%CriticalOvertopping
     modelFactorsArray(7) = modelFactors%relaxationFactor
     modelFactorsArray(8) = modelFactors%reductionFactorForeshore
-    
+
     if (present(load) .and. present(loadArray)) then
-        loadArray(1) = load%h    
-        loadArray(2) = load%Hm0  
+        loadArray(1) = load%h
+        loadArray(2) = load%Hm0
         loadArray(3) = load%Tm_10
-        loadArray(4) = load%phi  
+        loadArray(4) = load%phi
     endif
 
 end subroutine convertJ

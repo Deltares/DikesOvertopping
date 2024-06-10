@@ -73,6 +73,9 @@ module procedure calculateOvertopping
       crest = geometry%Coordinates%y(geometry%Coordinates%N)
 
       ! initialize local values wave height and wave period
+      if (load%h < toe) then
+          continue
+      end if
       loadAdj%Hm0   = min(load%Hm0, max(load%h - toe, 0.0d0))
       loadAdj%h     = load%h
       loadAdj%Tm_10 = load%Tm_10

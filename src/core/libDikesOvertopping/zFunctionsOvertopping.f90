@@ -35,7 +35,7 @@ module zFunctionsOvertopping
     use overtoppingInterface,        only : varModelFactorCriticalOvertopping
     use typeDefinitionsOvertopping,  only : tpGeometry, tpLoad, tpOvertoppingInput, tpOvertopping, tpGeometries, tpCoordinatePair
     use parametersOvertopping,       only : slope_min, xdiff_min
-    use mainModuleOvertopping,       only : calculateOvertopping, setupGeometries, cleanupGeometry
+    use mainModuleOvertopping,       only : calculateOvertopping, setupGeometries, cleanup_Geometry
     use geometryModuleOvertopping,   only : initializeGeometry, deallocateGeometry, allocCoordinatePair, copyCoordinates
     use OvertoppingMessages
     use vectorUtilities,             only : interpolateLine
@@ -47,14 +47,14 @@ module zFunctionsOvertopping
 
     private
 
-    public :: calculateQoHPC, zFuncLogRatios, profileInStructure
+    public :: calculateQo_HPC, zFuncLogRatios, profileInStructure
 
 contains
 
 !>
 !! Subroutine to calculate the overtopping discharge with the Overtopping dll
 !! @ingroup LibOvertopping
-subroutine calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+subroutine calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
 !DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQoHPC" :: calculateQoHPC
     real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
     type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
@@ -93,7 +93,7 @@ subroutine calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometrie
 
     geometries%geometrySectionBNoBerms%Coordinates%N = 0
     geometries%geometrySectionFNoBerms%Coordinates%N = 0
-end subroutine calculateQoHPC
+end subroutine calculateQo_HPC
 
 !>
 !! Subroutine to fill the profile in a structure and call the adjustment function of the profile due to a desired dike height

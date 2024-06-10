@@ -107,11 +107,13 @@ add_executable(unitTestProgram
     tests/DikesOvertoppingTests/omkeerVariantTests.f90
     tests/DikesOvertoppingTests/readCrossSectionForTests.f90
     tests/DikesOvertoppingTests/roughnessTests.f90
+    tests/DikesOvertoppingTests/dllFewsTests.f90
+    tests/DikesOvertoppingTests/dllTests.f90
     tests/unitTests/unitTestsProgram.F90
     external/throwexception.f90
 )
 
-target_link_libraries(unitTestProgram DikesOvertoppingLib HRtools FeedbackDll Feedback)
+target_link_libraries(unitTestProgram ${sharedLibName} DikesOvertoppingLib HRtools FeedbackDll Feedback)
 
 add_executable(runOvertopping
     exe/runOvertopping.f90
