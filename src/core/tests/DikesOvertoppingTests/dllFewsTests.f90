@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module dllFewsTests of the DikesOvertopping dll
 !
-! $Id$
-!
 !> 
 !! Module, holding tests of the functions of the dll.
 !!
@@ -49,6 +47,7 @@ subroutine allOvertoppingDllFewsTests
     call testWithLevel(overtoppingValidationFewsTest2, 'Java/FEWS interface; Test validation (B)', 1)
     call testWithLevel(TestCalculateQoJ,               'Java/FEWS interface; Test CalculateQoJ', 1)
     call testWithLevel(omkeerVariantTestJ,             'Java/FEWS interface; Test omkeerVariantJ', 1)
+    call testWithLevel(veryLowWaterLevel,              'Fews case with water level near toe', 1)
 end subroutine allOvertoppingDllFewsTests
 
 !! @ingroup DikeOvertoppingTests
@@ -263,5 +262,65 @@ subroutine convertJ(modelFactors, modelFactorsArray, load, loadArray)
     endif
 
 end subroutine convertJ
+
+subroutine veryLowWaterLevel()
+    use overtoppingInterface
+    use ModuleLogging
+
+    real(kind=wp), parameter       :: margin = 0.00001_wp
+    logical                        :: succes
+    integer, parameter             :: npoints = 4
+    type (tpOvertopping)           :: overtopping
+    character(len=128)             :: errorMessage      !< error message
+    type (tpLoad)                  :: load              !< structure with load data
+    type(OvertoppingGeometryTypeF) :: geometryF
+    real(kind=wp)                  :: dikeHeight
+    type(tpOvertoppingInput)       :: modelFactors
+    type(tLogging)                 :: logging
+
+    allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
+
+    ! =====  initializations =====
+    !
+    ! model factors
+    !
+    modelFactors%factorDeterminationQ_b_f_n = 2.6_wp
+    modelFactors%factorDeterminationQ_b_f_b = 4.75_wp
+    modelFactors%m_z2                       = 1.00_wp
+    modelFactors%fshallow                   = 0.92_wp
+    modelFactors%ComputedOvertopping        = 1.0_wp
+    modelFactors%CriticalOvertopping        = 1.0_wp
+    modelFactors%relaxationFactor           = 1.0d0
+    !
+    ! structure parameters
+    !
+    geometryF%xcoords   = [0.0_wp, 5.55_wp, 9.52_wp, 18.26_wp]
+    geometryF%ycoords   = [0.2_wp, 1.49_wp, 1.57_wp, 4.53_wp]
+    geometryF%roughness = 1.0_wp
+    geometryF%normal    = 270.0_wp ! degrees
+    geometryF%npoints   = npoints
+    dikeHeight          = 4.532_wp
+    !
+    ! load parameters
+    !
+    load%h     =     0.3_wp
+    load%Hm0   =     0.413_wp
+    load%Tm_10 =     2.35_wp
+    load%phi   =     273.3_wp
+    !
+    !
+    ! ===== actual test computations =====
+    !
+    call calculateQoF(load, geometryF, dikeHeight, modelFactors, overtopping, succes, errorMessage, logging)
+    call assert_true(succes, errorMessage)
+    call assert_comparable(overtopping%z2, 0.295726_wp, margin, "diff in z2 %")
+    call assert_comparable(overtopping%Qo, 6.938002e-51_wp, margin, "diff in Qo")
+
+    !
+    ! ===== clean up =====
+    !
+    deallocate(geometryF%xcoords, geometryF%ycoords, geometryF%roughness)
+
+end subroutine veryLowWaterLevel
 
 end module dllFewsTests
