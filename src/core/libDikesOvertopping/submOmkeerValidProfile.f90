@@ -25,10 +25,11 @@ submodule (omkeerVariantModule) submOmkeerValidProfile
     use typeDefinitionsOvertopping
     use overtoppingInterface
     use ModuleLogging
-    use zFunctionsOvertopping
+    use zFunctionsOvertopping, only : calculateQoHPC
     use parametersOvertopping
     use vectorUtilities, only : logLinearInterpolate
     use mainModuleOvertopping, only : setupGeometries, cleanupGeometry
+    implicit none
 
 contains
 

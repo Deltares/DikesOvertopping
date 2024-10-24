@@ -55,7 +55,7 @@ contains
 !! Subroutine to calculate the overtopping discharge with the Overtopping dll
 !! @ingroup LibOvertopping
 subroutine calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
-!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQoHPC" :: calculateQoHPC
+!!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQoHPC" :: calculateQoHPC
     real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
     type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
     type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
