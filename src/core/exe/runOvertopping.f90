@@ -28,7 +28,7 @@ program runOvertopping
 
     call get_command_argument( 1, infile, status = ierr )
 
-    write(*,*) 'input file : ', trim(infile)
+    !write(*,*) 'input file : ', trim(infile)
     open(newunit = iunit, file = infile, status='old', action='read', iostat=ierr)
     if (ierr == 0) read(iunit,*, iostat=ierr) nPoints
     if (ierr == 0) allocate(coordinates%x(nPoints), coordinates%y(nPoints), roughnessFactors(nPoints-1), stat=ierr)
@@ -85,7 +85,7 @@ program runOvertopping
     end if
 
     givenDischarge = modelFactors%CriticalOvertopping
-    if (error%errorCode == 0) then
+    if (.false. .and. error%errorCode == 0) then
         geometryF%normal  = psi
         geometryF%nPoints = nPoints
         allocate(geometryF%xCoords(nPoints), geometryF%yCoords(nPoints), geometryF%roughness(nPoints))
@@ -96,9 +96,10 @@ program runOvertopping
     end if
 
     if (error%errorCode == 0) then
-        write(*,*) 'z-2%           = ', overtopping%z2
-        write(*,*) 'q              = ', overtopping%qo
-        write(*,*) 'omkeer variant = ', dikeHeight
+        !write(*,*) 'z-2%           = ', overtopping%z2
+        !write(*,*) 'q              = ', overtopping%qo
+        write(*,*) overtopping%qo
+        !write(*,*) 'omkeer variant = ', dikeHeight
     else
         write(*,*) 'error: ', error%message
     endif
