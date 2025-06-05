@@ -129,11 +129,6 @@ add_executable(runOvertopping
 )
 target_link_libraries(runOvertopping DikesOvertoppingLib FeedbackDll Feedback)
 
-add_executable(runOvertopping
-    exe/runOvertopping.f90
-)
-target_link_libraries(runOvertopping DikesOvertoppingLib FeedbackDll Feedback)
-
 enable_testing()
 
 add_test(
