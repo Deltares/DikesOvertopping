@@ -24,8 +24,6 @@
 !! This file contains the omkeerVariant
 !<
 !
-! $Id$
-!
 !>
 !! Module for the 'omkeerVariant'
 !! @ingroup LibOvertopping

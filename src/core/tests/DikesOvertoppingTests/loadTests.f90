@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module loadTests of the Overtopping dll
 !
-! $Id$
-!
 !> 
 !! Module, holding test series in which the load parameters are varied. These are the basic test series.
 !!

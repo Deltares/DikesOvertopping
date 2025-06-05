@@ -24,8 +24,6 @@
 !! Module for steering the extra logging
 !<
 !
-! $Id$
-!
 !> steering the extra logging
 !
 module ModuleLogging

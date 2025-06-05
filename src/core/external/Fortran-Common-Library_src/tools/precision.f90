@@ -28,8 +28,6 @@
 !!  routines.
 !<
 !
-! $Id$
-!
 !>
 !! Module with parameters for KINDs and mathematical constants
 !!   @ingroup general

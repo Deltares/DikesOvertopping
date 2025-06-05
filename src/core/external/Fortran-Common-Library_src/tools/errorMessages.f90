@@ -25,8 +25,6 @@
 !! and a switch between dutch and english messages
 !<
 !
-! $Id$
-!
 !>
 !! Module with a struct for error and validation messages and a switch between dutch and english messages
 !!   @ingroup Tools

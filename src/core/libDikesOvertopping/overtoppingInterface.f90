@@ -25,8 +25,6 @@
 !! as part of the interface to and from dllOvertopping
 !<
 !
-! $Id$
-!
 !>
 !! Module for the interface of dllOvertopping
 !! @ingroup LibOvertopping

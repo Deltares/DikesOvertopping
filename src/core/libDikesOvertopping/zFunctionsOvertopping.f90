@@ -24,8 +24,6 @@
 !! This file contains the limit state functions for wave overtopping within VTV
 !<
 !
-! $Id$
-!
 !>
 !! Module for the Limit State Functions (Z-functions) for wave overtopping
 !! @ingroup dllOvertopping

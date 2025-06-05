@@ -27,8 +27,6 @@
 !
 !  Programmer: Bastiaan Kuijper, HKV consultants
 !
-!  $Id$
-!
 !***********************************************************************************************************
 !
 !> functions for the slope angle and influence factors

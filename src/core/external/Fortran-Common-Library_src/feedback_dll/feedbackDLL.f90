@@ -33,9 +33,6 @@
 !! all output ends up at the right location.
 !<
 !
-! $Id$
-!
-!
 module feedbackDLL
     implicit none
 

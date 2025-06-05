@@ -24,8 +24,6 @@
 !! Feedback library: error messaging and progress reporting
 !<
 !
-! $Id$
-!
 !> @defgroup Feedback Feedback library
 !! The feedback library provides a mechanism for reporting errors and progress
 !!

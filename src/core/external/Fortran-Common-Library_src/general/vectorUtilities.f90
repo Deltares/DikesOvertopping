@@ -23,8 +23,6 @@
 !> @file vectorUtilities.f90
 !!  Implement various utility functions for vectors
 !
-! $Id$
-!
 !>
 !! Module with vector utility functions
 !!   @ingroup general

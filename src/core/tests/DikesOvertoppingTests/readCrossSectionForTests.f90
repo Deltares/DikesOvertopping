@@ -24,8 +24,6 @@
 !! Contains the module readCrossSectionForTests. This module is used in the tests of the Overtopping dll
 !
 !
-! $Id$
-!
 !> 
 !!Module for reading the cross section file for testing the Overtopping kernel
 !!

@@ -24,8 +24,6 @@
 !! This file contains a module with functions to test quality of reals
 !<
 !
-! $Id$
-!
 !>
 !! Module with functions to test quality of reals
 !!   @ingroup General

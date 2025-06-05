@@ -37,9 +37,6 @@
 !!  - GetLanguage
 !!  - versionNumber
 !
-! $Id$
-!
-!
 !> Main entry for the dll DikesOvertopping
 !
 module dllOvertopping

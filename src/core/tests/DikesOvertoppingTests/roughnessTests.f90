@@ -24,8 +24,6 @@
 !! Contains the module crossSectionRoughnessTests of the Overtopping dll
 !
 !
-! $Id$
-!
 !>
 !! Module holding test series of changing the roughness of a the cross sections
 !!

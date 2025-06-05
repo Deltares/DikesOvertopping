@@ -24,8 +24,6 @@
 !! General utility routines
 !<
 !
-! $Id$
-!
 !>
 !! Module with general utility routines
 !!   @ingroup General

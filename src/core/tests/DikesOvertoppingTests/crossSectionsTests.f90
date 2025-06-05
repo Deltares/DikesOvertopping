@@ -24,8 +24,6 @@
 !! Contains the module crossSectionsAdaptionTests of the Overtopping dll
 !
 !
-! $Id$
-!
 !>
 !! Module holding the test series of adapting the cross section characteristics
 !!

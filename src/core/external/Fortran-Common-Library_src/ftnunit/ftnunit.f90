@@ -45,8 +45,6 @@
 !         "stopped" must be properly used.
 !
 !
-!     $Id$
-!
 ! ftnunit --
 !     Core module for ftnunit
 !

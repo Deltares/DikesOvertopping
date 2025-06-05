@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module overtoppingUnitTests of the DikesOvertopping dll
 !
-! $Id$
-!
 !> 
 !! Module, holding tests of some low levels functions of the kernel.
 !!

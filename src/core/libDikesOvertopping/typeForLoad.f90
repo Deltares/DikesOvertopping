@@ -27,8 +27,6 @@
 !
 !  Programmer: Bastiaan Kuijper, HKV consultants / Edwin Spee, Deltares
 !
-!  $Id$
-!
 !***********************************************************************************************************
 !
 !> type definitions for Dikes Overtopping

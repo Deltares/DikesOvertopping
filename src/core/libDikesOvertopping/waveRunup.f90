@@ -27,8 +27,6 @@
 !
 !  Programmers: Bastiaan Kuijper, HKV consultants / Edwin Spee, Deltares
 !
-!  $Id$
-!
 !> Iteration procedure for 2% wave runup
 !
 !***********************************************************************************************************

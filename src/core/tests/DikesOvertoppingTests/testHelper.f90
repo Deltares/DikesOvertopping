@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module testHelper
 !
-! $Id$
-!
 !> 
 !! Module, holding helper routine(s) for the DikesOvertopping tests
 !!

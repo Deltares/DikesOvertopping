@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module omkeerVariantTests of the DikesOvertopping dll
 !
-! $Id$
-!
 !> 
 !! Module, holding tests of the 'omkeerVariant' functions within the DikesOvertopping dll.
 !!

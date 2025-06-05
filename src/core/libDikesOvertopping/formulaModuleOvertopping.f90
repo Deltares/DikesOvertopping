@@ -28,8 +28,6 @@
 !  Programmer: Bastiaan Kuijper, HKV consultants
 !              Edwin Spee, Deltares
 !
-!  $Id$
-!
 !***********************************************************************************************************
 !
 !> the core computations for Dikes Overtopping

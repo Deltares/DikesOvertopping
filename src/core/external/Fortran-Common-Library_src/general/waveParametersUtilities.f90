@@ -24,9 +24,6 @@
 !!     Module waveParametersUtilities for wave parameter computations
 !
 !
-! $Id$
-!
-!
 !> Module to calculate the wave steepness or the wave period
 !!
 !!   @ingroup general

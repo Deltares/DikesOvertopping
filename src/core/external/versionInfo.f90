@@ -24,8 +24,6 @@
 !! Module for retrieving file version info for a .dll or .exe 
 !<
 !
-! $Id: versionInfo.f90 9219 2019-02-05 08:01:26Z spee $
-!
 !!   @ingroup General
 module versionInfo
 

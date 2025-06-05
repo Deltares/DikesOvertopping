@@ -24,9 +24,6 @@
 !! Feedback parameters: parameters needed bij feedback and feedback_dll
 !<
 !
-! $Id$
-!
-!
 module feedback_parameters
     integer, parameter  :: onfatalerrorStop                   = 1   !< Action on fatal error: exit the program
     integer, parameter  :: onfatalerrorThrowException         = 2   !< Action on fatal error: throw exception (for use as dll)

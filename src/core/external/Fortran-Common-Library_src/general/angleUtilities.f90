@@ -23,8 +23,6 @@
 !> @file angleUtilities.f90
 !!  Implement various utility functions dealing with directions.
 !
-! $Id$
-!
 !>
 !! Module with direction utility functions
 !!   @ingroup general
