@@ -48,7 +48,7 @@ module procedure setupGeometries
       geometries%geometryRemoveDikeSegments%parent => geometries
 end procedure setupGeometries
 
-module procedure cleanupGeometry
+module procedure cleanup_Geometry
       call deallocateGeometry(geometries%adjWithDikeHeight)
       call deallocateGeometry(geometries%geometryMergedBerms)
       call deallocateGeometry(geometries%geometrySectionB)
@@ -69,6 +69,6 @@ module procedure cleanupGeometry
 
       call cleanupCoordinatePair(geometries%CoordsAdjusted)
 
-end procedure cleanupGeometry
+end procedure cleanup_Geometry
 
 end submodule submAllocOvertopping

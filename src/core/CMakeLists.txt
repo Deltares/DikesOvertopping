@@ -115,12 +115,14 @@ add_executable(unitTestProgram
     tests/DikesOvertoppingTests/omkeerVariantTests.f90
     tests/DikesOvertoppingTests/readCrossSectionForTests.f90
     tests/DikesOvertoppingTests/roughnessTests.f90
+    tests/DikesOvertoppingTests/dllFewsTests.f90
+    tests/DikesOvertoppingTests/dllTests.f90
     tests/unitTests/unitTestsProgram.F90
     external/throwexception.f90
     ${extra_files}
 )
 
-target_link_libraries(unitTestProgram DikesOvertoppingLib HRtools FeedbackDll Feedback)
+target_link_libraries(unitTestProgram ${sharedLibName} DikesOvertoppingLib HRtools FeedbackDll Feedback)
 
 add_executable(runOvertopping
     exe/runOvertopping.f90
@@ -131,7 +133,7 @@ enable_testing()
 
 add_test(
   NAME overtopping-unit-tests
-  COMMAND $<TARGET_FILE:unitTestProgram> /s 1
+  COMMAND $<TARGET_FILE:unitTestProgram> /s 3
   WORKING_DIRECTORY ../tests/unitTests
 )
 

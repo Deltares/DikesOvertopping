@@ -51,9 +51,9 @@ end type tMessage
 
 !> struct for all messages
 type TErrorMessages
-    integer        :: nErrors                  !< Number of errors
-    integer        :: nWarnings                !< Number of warnings
-    logical        :: tooSmall                 !< Indicator for reaching the maximum size of messages
+    integer        :: nErrors =0               !< Number of errors
+    integer        :: nWarnings = 0            !< Number of warnings
+    logical        :: tooSmall = .false.       !< Indicator for reaching the maximum size of messages
     type(tMessage) :: messages(maxMessages)    !< list of messages including errorCode and severity
 end type TErrorMessages
 

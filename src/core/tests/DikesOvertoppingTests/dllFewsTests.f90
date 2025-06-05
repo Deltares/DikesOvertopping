@@ -23,19 +23,16 @@
 !> @file
 !! Contains the module dllFewsTests of the DikesOvertopping dll
 !
-! $Id$
-!
 !> 
 !! Module, holding tests of the functions of the dll.
 !!
 !! @ingroup DikeOvertoppingTests
 module dllFewsTests
+use dllOvertopping
 use precision, only : wp, pntlen
 use typeDefinitionsOvertopping
 use testHelper, only : init_modelfactors_and_load
 use ftnunit
-use user32
-use kernel32
 
 implicit none
 
@@ -50,12 +47,11 @@ subroutine allOvertoppingDllFewsTests
     call testWithLevel(overtoppingValidationFewsTest2, 'Java/FEWS interface; Test validation (B)', 1)
     call testWithLevel(TestCalculateQoJ,               'Java/FEWS interface; Test CalculateQoJ', 1)
     call testWithLevel(omkeerVariantTestJ,             'Java/FEWS interface; Test omkeerVariantJ', 1)
+    call testWithLevel(veryLowWaterLevel,              'Fews case with water level near toe', 1)
 end subroutine allOvertoppingDllFewsTests
 
 !! @ingroup DikeOvertoppingTests
 subroutine TestCalculateQoJ
-    integer(kind=pntlen)           :: p
-    external                       :: calculateQoJ
     integer                        :: i
     logical                        :: succes
     integer, parameter             :: npoints = 3
@@ -73,11 +69,6 @@ subroutine TestCalculateQoJ
     real(kind=wp)                  :: output(2)
     real(kind=wp), parameter       :: margin     =  0.00001_wp
 
-
-    pointer            (qc, calculateQoJ)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qc = getprocaddress (p, "calculateQoJ"C)
     !
     ! initializations
     !
@@ -118,8 +109,7 @@ end subroutine TestCalculateQoJ
 !!
 !! @ingroup DikeOvertoppingTests
 subroutine overtoppingValidationFewsTest
-    integer(kind=pntlen)           :: p
-    external                       :: ValidateInputJ, SetLanguage
+    use overtoppingMessages
     integer, parameter             :: npoints = 5
     real(kind=wp)                  :: xcoords(nPoints)
     real(kind=wp)                  :: ycoords(nPoints)
@@ -133,16 +123,10 @@ subroutine overtoppingValidationFewsTest
     logical                        :: success
     character(len=256)             :: errorMsg
 
-    pointer            (qvalidate, ValidateInputJ)
-    pointer            (qsl, SetLanguage)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qvalidate = getprocaddress (p, "ValidateInputJ"C)
-    qsl = getprocaddress (p, "SetLanguage"C)
     !
     ! initializations
     !
-    call SetLanguage('NL')
+    call SetLanguageDll('NL')
     call init_modelfactors_and_load(modelFactors)
     call convertJ(modelFactors, modelFactorsArray)
 
@@ -163,7 +147,7 @@ subroutine overtoppingValidationFewsTest
     !
     ycoords = [-5, 0, 5, 6, 7]
     modelFactorsArray(3)     = -1.00_wp
-    call SetLanguage('UK')
+    call SetLanguageDll('UK')
     call ValidateInputJ(xcoords, ycoords, roughness, normal, nPoints, dikeHeight, modelFactorsArray, success, errorMsg)
     call assert_false(success, "expect failure")
     loc = index(errorMsg, 'Model factor 2% wave runup smaller than  0.000')
@@ -186,8 +170,6 @@ end subroutine overtoppingValidationFewsTest
 !!
 !! @ingroup DikeOvertoppingTests
 subroutine overtoppingValidationFewsTest2
-    integer(kind=pntlen)           :: p
-    external                       :: ValidateInputJ, SetLanguage
     integer, parameter             :: npoints = 2
     real(kind=wp)                  :: xcoords(nPoints)
     real(kind=wp)                  :: ycoords(nPoints)
@@ -200,12 +182,6 @@ subroutine overtoppingValidationFewsTest2
     logical                        :: success
     character(len=256)             :: errorMsg
 
-    pointer            (qvalidate, ValidateInputJ)
-    pointer            (qsl, SetLanguage)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    qvalidate = getprocaddress (p, "ValidateInputJ"C)
-    qsl = getprocaddress (p, "SetLanguage"C)
     !
     ! initializations
     !
@@ -225,8 +201,6 @@ end subroutine overtoppingValidationFewsTest2
 !> test for omkeerVariantJ
 !! @ingroup DikeOvertoppingTests
 subroutine omkeerVariantTestJ
-    integer(kind=pntlen)           :: p
-    external                       :: omkeerVariantJ
     integer                        :: i
     logical                        :: succes
     integer, parameter             :: npoints = 3
@@ -243,13 +217,6 @@ subroutine omkeerVariantTestJ
     real(kind=wp)                  :: modelFactors(8)
     real(kind=wp), parameter       :: givenDischarge = 0.8d-8  !< discharge to iterate to
 
-    pointer            (q, omkeerVariantJ)
-
-    p = loadlibrary    ("dllDikesOvertopping.dll"C) ! the C at the end says add a null byte as in C
-    call assert_true(p /= 0, 'load dllDikesOvertopping.dll')
-    q = getprocaddress (p, "omkeerVariantJ"C)
-    call assert_true(q /= 0, 'get function pointer to omkeerVariantJ')
-    if (q == 0) return
     !
     ! initializations
     !
@@ -286,14 +253,74 @@ subroutine convertJ(modelFactors, modelFactorsArray, load, loadArray)
     modelFactorsArray(6) = modelFactors%CriticalOvertopping
     modelFactorsArray(7) = modelFactors%relaxationFactor
     modelFactorsArray(8) = modelFactors%reductionFactorForeshore
-    
+
     if (present(load) .and. present(loadArray)) then
-        loadArray(1) = load%h    
-        loadArray(2) = load%Hm0  
+        loadArray(1) = load%h
+        loadArray(2) = load%Hm0
         loadArray(3) = load%Tm_10
-        loadArray(4) = load%phi  
+        loadArray(4) = load%phi
     endif
 
 end subroutine convertJ
+
+subroutine veryLowWaterLevel()
+    use overtoppingInterface
+    use ModuleLogging
+
+    real(kind=wp), parameter       :: margin = 0.00001_wp
+    logical                        :: succes
+    integer, parameter             :: npoints = 4
+    type (tpOvertopping)           :: overtopping
+    character(len=128)             :: errorMessage      !< error message
+    type (tpLoad)                  :: load              !< structure with load data
+    type(OvertoppingGeometryTypeF) :: geometryF
+    real(kind=wp)                  :: dikeHeight
+    type(tpOvertoppingInput)       :: modelFactors
+    type(tLogging)                 :: logging
+
+    allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
+
+    ! =====  initializations =====
+    !
+    ! model factors
+    !
+    modelFactors%factorDeterminationQ_b_f_n = 2.6_wp
+    modelFactors%factorDeterminationQ_b_f_b = 4.75_wp
+    modelFactors%m_z2                       = 1.00_wp
+    modelFactors%fshallow                   = 0.92_wp
+    modelFactors%ComputedOvertopping        = 1.0_wp
+    modelFactors%CriticalOvertopping        = 1.0_wp
+    modelFactors%relaxationFactor           = 1.0d0
+    !
+    ! structure parameters
+    !
+    geometryF%xcoords   = [0.0_wp, 5.55_wp, 9.52_wp, 18.26_wp]
+    geometryF%ycoords   = [0.2_wp, 1.49_wp, 1.57_wp, 4.53_wp]
+    geometryF%roughness = 1.0_wp
+    geometryF%normal    = 270.0_wp ! degrees
+    geometryF%npoints   = npoints
+    dikeHeight          = 4.532_wp
+    !
+    ! load parameters
+    !
+    load%h     =     0.3_wp
+    load%Hm0   =     0.413_wp
+    load%Tm_10 =     2.35_wp
+    load%phi   =     273.3_wp
+    !
+    !
+    ! ===== actual test computations =====
+    !
+    call calculateQoF(load, geometryF, dikeHeight, modelFactors, overtopping, succes, errorMessage, logging)
+    call assert_true(succes, errorMessage)
+    call assert_comparable(overtopping%z2, 0.295726_wp, margin, "diff in z2 %")
+    call assert_comparable(overtopping%Qo, 6.938002e-51_wp, margin, "diff in Qo")
+
+    !
+    ! ===== clean up =====
+    !
+    deallocate(geometryF%xcoords, geometryF%ycoords, geometryF%roughness)
+
+end subroutine veryLowWaterLevel
 
 end module dllFewsTests

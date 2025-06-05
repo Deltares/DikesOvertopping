@@ -43,14 +43,13 @@
 !> Main entry for the dll DikesOvertopping
 !
 module dllOvertopping
-    use zFunctionsOvertopping,      only : calculateQoHPC, zFuncLogRatios
+    use zFunctionsOvertopping,      only : calculateQo_HPC, zFuncLogRatios
     use geometryModuleOvertopping,  only : deallocateGeometry
     use precision,                  only : wp, set_nan
     use typeDefinitionsOvertopping, only : tpGeometry, tpLoad, tpOvertoppingInput
     use overtoppingInterface,       only : OvertoppingGeometryType, OvertoppingGeometryTypeF
     use versionInfo,                only : tpVersionStruct, getFileVersion
-    use mainModuleOvertopping,      only : initGeometries, setupGeometries, cleanupGeometry
-    use errorMessages, only : tMessage
+    use mainModuleOvertopping,      only : initGeometries, setupGeometries, cleanup_Geometry
     use, intrinsic :: iso_c_binding
 
     implicit none
@@ -59,8 +58,8 @@ module dllOvertopping
 
     !  FUNCTIONS/SUBROUTINES exported from dllOvertoppping.dll:
     public :: calculateQo, calculateQoF, calcZValue, versionNumber, ValidateInputC, ValidateInputF, &
-              omkeerVariantF, setLanguage, getLanguage, &
-              calculateQoJ, ValidateInputJ, omkeerVariantJ
+              omkeerVariantF, calculateQoJ, ValidateInputJ, omkeerVariantJ, &
+              setLanguageDll, getLanguageDll
 
     character, parameter :: separationChar = char(9)      !< use horizontal tab for separation
     integer, parameter   :: msgLength = 256
@@ -191,9 +190,9 @@ subroutine calculateQoF(load, geometryF, dikeHeight, modelFactors, overtopping, 
     call setupGeometries(geometry%parent)
 
     if (error%errorCode == 0) then
-        call calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometry%parent, error)
+        call calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometry%parent, error)
     end if
-    call cleanupGeometry(geometry%parent)
+    call cleanup_Geometry(geometry%parent)
     deallocate(geometry%parent)
     call deallocateGeometry(geometry)
     success = (error%errorCode == 0)
@@ -383,9 +382,7 @@ subroutine ValidateInputF(geometryF, dikeHeight, modelFactors, errorStruct)
     success = .true.
     errorText = ' '
 
-    if (success) then
-        call basicGeometryValidation(geometryF, success, errorStruct)
-    endif
+    call basicGeometryValidation(geometryF, success, errorStruct)
 
     if (success) then
         coordinates%N = geometryF%npoints
@@ -492,6 +489,7 @@ subroutine omkeerVariantC(load, discharge, geometryInput, modelFactors, dikeHeig
     use typeDefinitionsOvertopping
     use omkeerVariantModule
     use ModuleLogging
+    use errorMessages, only : tMessage
     type(OvertoppingGeometryType), intent(in) :: geometryInput  !< struct with geometry and roughness as c-pointers
     real(kind=wp), intent(in)                 :: discharge      !< input discharge
     type(tpLoad), intent(in)                  :: load           !< struct with waterlevel and wave parameters
@@ -533,6 +531,7 @@ subroutine omkeerVariantF(load, geometryF, givenDischarge, dikeHeight, modelFact
     use typeDefinitionsOvertopping
     use ModuleLogging
     use omkeerVariantModule
+    use errorMessages, only : tMessage
     type(OvertoppingGeometryTypeF), intent(in) :: geometryF      !< struct with geometry and roughness
     type(tpLoad), intent(in)                   :: load           !< struct with waterlevel and wave parameters
     real(kind=wp), intent(in)                  :: givenDischarge !< discharge to iterate to
@@ -550,38 +549,6 @@ subroutine omkeerVariantF(load, geometryF, givenDischarge, dikeHeight, modelFact
         errorText = error%message
     end if
 end subroutine omkeerVariantF
-
-!>
-!! Subroutine that sets the language for error and validation messages
-!!
-!! @ingroup dllDikesOvertopping
-subroutine SetLanguage(lang) bind(c, name="SetLanguage")
-!DEC$ ATTRIBUTES DLLEXPORT :: SetLanguage
-use OvertoppingMessages, only : SetLanguageCore => SetLanguage
-character(len=1), intent(in) :: lang(*)
-
-character(len=2) :: langF
-integer           :: i
-
-langF = ' '
-do i = 1, 2
-    langF(i:i) = lang(i)
-end do
-call SetLanguageCore(langF)
-
-end subroutine SetLanguage
-
-!>
-!! Subroutine that gets the language for error and validation messages
-!!
-!! @ingroup dllDikesOvertopping
-subroutine GetLanguage(lang)
-!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"GetLanguage" :: GetLanguage
-use OvertoppingMessages, only : GetLanguageCore => GetLanguage
-character(len=*), intent(out) :: lang
-
-call GetLanguageCore(lang)
-end subroutine GetLanguage
 
 !>
 !! Subroutine that delivers the version number
@@ -657,5 +624,21 @@ subroutine input_j_f(x, y, roughness, normal, geometryF, modelFactorsJ, modelFac
         loadF%phi   = loadJ(4)
     endif
 end subroutine input_j_f
+
+! set language function such that test code sets the language in the dll
+subroutine setLanguageDll(lang)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"setLanguageDll" :: setLanguageDll
+    use overtoppingMessages
+    character(len=*) :: lang
+    call setLanguage(lang)
+end subroutine setLanguageDll
+
+! get language function such that test code gets the language in the dll
+subroutine getLanguageDll(lang)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"getLanguageDll" :: getLanguageDll
+    use overtoppingMessages
+    character(len=*) :: lang
+    call getLanguage(lang)
+end subroutine getLanguageDll
 
 end module dllOvertopping

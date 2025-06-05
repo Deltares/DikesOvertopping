@@ -146,26 +146,26 @@ end subroutine setTestTitle
 ! test --
 !     Routine to run a unit test
 ! Arguments:
-!     proc          The subroutine implementing the unit test
+!     testproc      The subroutine implementing the unit test
 !     text          Text describing the test
 !
-subroutine test( proc, text, ignore_reason_in )
-    external                               :: proc
+subroutine test( testproc, text, ignore_reason_in )
+    external                               :: testproc
     character(len=*)                       :: text
     character(len=*), intent(in), optional :: ignore_reason_in
 
-    call testWithLevel(proc, text, 0, ignore_reason_in)
+    call testWithLevel(testproc, text, 0, ignore_reason_in)
 end subroutine test
 
 ! test --
 !     Routine to run a unit test up until a level
 ! Arguments:
-!     proc          The subroutine implementing the unit test
+!     testproc      The subroutine implementing the unit test
 !     text          Text describing the test
 !
-subroutine testWithLevel( proc, text, testlevel, ignore_reason_in )
+subroutine testWithLevel( testproc, text, testlevel, ignore_reason_in )
 use precision, only : wp
-    external                               :: proc
+    external                               :: testproc
     character(len=*)                       :: text
     integer, intent(in)                    :: testlevel
     character(len=*), intent(in), optional :: ignore_reason_in
@@ -241,7 +241,7 @@ use precision, only : wp
 
         call cpu_time(start)
         call system_clock(cstart)
-        call proc
+        call testproc
         call cpu_time(finish)
         call system_clock(cfinish)
         call ftnunit_write_html_cpu(finish - start, cfinish - cstart)

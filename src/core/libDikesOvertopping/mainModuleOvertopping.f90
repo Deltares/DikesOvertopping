@@ -47,7 +47,7 @@
 
    public :: calculateOvertopping, calculateOvertoppingSection, calculateWaveOvertopping
    public :: interpolateResultsSections, checkInputdata, checkModelFactors
-   public :: setupGeometries, cleanupGeometry, initGeometries
+   public :: setupGeometries, cleanup_Geometry, initGeometries
 
    interface
       module subroutine calculateOvertopping (geometry, load, modelFactors, overtopping, error)
@@ -133,10 +133,10 @@
    end interface
 
    interface
-      module subroutine cleanupGeometry(geometries)
+      module subroutine cleanup_Geometry(geometries)
 !DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"cleanupGeometry" :: cleanupGeometry
          type(tpGeometries), intent(inout) :: geometries
-      end subroutine cleanupGeometry
+      end subroutine cleanup_Geometry
    end interface
 
 end module mainModuleOvertopping

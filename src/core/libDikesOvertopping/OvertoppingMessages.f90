@@ -54,14 +54,16 @@ contains
 !!    only strings 'NL' and 'UK' are recoqnized (lower and upper case)
 !!
 !! @ingroup LibOvertopping
-subroutine SetLanguage(lang)
+subroutine SetLanguage(lang) bind(C, name="SetLanguage")
 use feedback
 use utilities, only : to_upper
-character(len=*), intent(in) :: lang   !< new language ID to be used
+character(len=1), intent(in) :: lang(*)   !< new language ID to be used
 
-character(len=len(lang)) :: langUpper
+character(len=2) :: langUpper, langF
 
-langUpper = to_upper(lang)
+langF(1:1) = lang(1)
+langF(2:2) = lang(2)
+langUpper = to_upper(langF)
 
 select case (langUpper)
     case ('NL')
@@ -69,7 +71,7 @@ select case (langUpper)
     case ('UK')
         language = languageUK
     case default
-        call fatalError("Language " // lang // " not supported")
+        call fatalError("Language " // langF // " not supported")
 end select
 end subroutine SetLanguage
 
@@ -77,10 +79,13 @@ end subroutine SetLanguage
 !! Subroutine that gets the language for error and validation messages
 !!
 !! @ingroup LibOvertopping
-subroutine GetLanguage(lang)
-character(len=*), intent(out) :: lang   !< filled with current language ID
+subroutine GetLanguage(lang) bind(C, name="GetLanguage")
+character(len=1), intent(out) :: lang(*)   !< filled with current language ID
+character(len=2) :: langUpper, langF
 
-lang = merge( "NL", "UK", language == languageNL)
+langF = merge( "NL", "UK", language == languageNL)
+lang(1) = langF(1:1)
+lang(2) = langF(2:2)
 end subroutine GetLanguage
 
 !>
