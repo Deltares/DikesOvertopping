@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FFBB9716-714F-43B4-B52B-79DC13DFEF84}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestWrapper</RootNamespace>
     <AssemblyName>TestWrapper</AssemblyName>
@@ -71,6 +71,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\core\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
@@ -82,12 +85,6 @@
     <Compile Include="OvertoppingCalculationTest.cs" />
     <Compile Include="OvertoppingFortranAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Content Include="..\..\release\x64\dllDikesOvertopping.dll">
-      <Link>dllDikesOvertopping.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'win32'">
     <Content Include="..\..\release\win32\dllDikesOvertopping.dll">

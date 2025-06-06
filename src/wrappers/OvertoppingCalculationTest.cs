@@ -1,4 +1,4 @@
-// Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+// Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 //
 // This file is part of the Dikes Overtopping Kernel.
 //
@@ -26,6 +26,16 @@ namespace TestWrapper
     [TestFixture]
     public class OvertoppingCalculationTest
     {
+        public static int Main()
+        {
+            TestOvertopping();
+            TestOmkeerVariant();
+            TestOvertoppingValidation();
+            TestOvertoppingValidationGeometry();
+            TestOvertoppingValidationMultiple();
+            return 0;
+        }
+
         [Test]
         public static void TestOvertopping()
         {
