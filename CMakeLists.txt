@@ -124,58 +124,8 @@ set_target_properties(Feedback
 
 target_link_libraries(Feedback HRtools FeedbackDll)
 
-
-add_library(DikesOvertoppingLib
-  STATIC
-    src/core/libDikesOvertopping/utils.f90
-    src/core/libDikesOvertopping/factorModuleOvertopping.f90
-    src/core/libDikesOvertopping/mainModuleOvertopping.f90
-    src/core/libDikesOvertopping/OvertoppingMessages.f90
-    src/core/libDikesOvertopping/formulaModuleOvertopping.f90
-    src/core/libDikesOvertopping/ModuleLogging.f90
-    src/core/libDikesOvertopping/typeDefinitionsOvertopping.f90
-    src/core/libDikesOvertopping/typeForLoad.f90
-    src/core/libDikesOvertopping/typeForFactors.f90
-    src/core/libDikesOvertopping/parametersOvertopping.f90
-    src/core/libDikesOvertopping/geometryModuleOvertopping.f90
-    src/core/libDikesOvertopping/omkeerVariantModule.f90
-    src/core/libDikesOvertopping/waveRunup.f90
-    src/core/libDikesOvertopping/overtoppingInterface.f90
-    src/core/libDikesOvertopping/zFunctionsOvertopping.f90
-    src/core/libDikesOvertopping/submAdjNonHorizBerms.f90
-    src/core/libDikesOvertopping/submAllocsGeometry.f90
-    src/core/libDikesOvertopping/submBasicGeometryValidation.f90
-    src/core/libDikesOvertopping/submCalcHorzProps.f90
-    src/core/libDikesOvertopping/submCalcSegmentSlopes.f90
-    src/core/libDikesOvertopping/submCheckCrossSection.f90
-    src/core/libDikesOvertopping/submCheckSegmentTypes.f90
-    src/core/libDikesOvertopping/submDetermineSegmentTypes.f90
-    src/core/libDikesOvertopping/submInitializeGeometry.f90
-    src/core/libDikesOvertopping/submMergeSequentialBerms.f90
-    src/core/libDikesOvertopping/submRemoveSegments.f90
-    src/core/libDikesOvertopping/submSplitCrossSection.f90
-    src/core/libDikesOvertopping/submAllocOvertopping.f90
-    src/core/libDikesOvertopping/submCalcOvertopping.f90
-    src/core/libDikesOvertopping/submCalcOvertoppingSection.f90
-    src/core/libDikesOvertopping/submCalcWaveOvertopping.f90
-    src/core/libDikesOvertopping/submInterpResultsSections.f90
-    src/core/libDikesOvertopping/factorModuleOvertopping.f90
-    src/core/libDikesOvertopping/submAdjInfluenceFactors.f90
-    src/core/libDikesOvertopping/submCalcBreakerLimit.f90
-    src/core/libDikesOvertopping/submCalcWaveOvertopDischarge.f90
-    src/core/libDikesOvertopping/submCalcWaveProps.f90
-    src/core/libDikesOvertopping/submCalcWaveRunup.f90
-    src/core/libDikesOvertopping/submCubicRoots.f90
-    src/core/libDikesOvertopping/submInnerCalculation.f90
-    src/core/libDikesOvertopping/submIterationWaveRunup.f90
-    src/core/libDikesOvertopping/submOmkeerMain.f90
-    src/core/libDikesOvertopping/submOmkeerValidProfile.f90
-    src/core/libDikesOvertopping/submAllocVectorsGeom.f90
-    src/core/libDikesOvertopping/submCopyGeom.f90
-    src/core/libDikesOvertopping/submRemoveBerms.f90
-    src/core/libDikesOvertopping/submCheckInputData.f90
-    src/core/libDikesOvertopping/submCheckModelFactors.f90
-)
+file(GLOB lib_dikes_overs_files "src/core/libDikesOvertopping/*.[fF]90")
+add_library(DikesOvertoppingLib STATIC ${lib_dikes_overs_files})
 
 set_target_properties(DikesOvertoppingLib
     PROPERTIES
@@ -206,23 +156,14 @@ set_target_properties(${sharedLibName}
 target_link_libraries(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
 add_dependencies(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
 
-add_executable(unitTestProgram
-    src/core/tests/DikesOvertoppingTests/crossSectionsTests.f90
-    src/core/tests/DikesOvertoppingTests/overtoppingTests.f90
-    src/core/tests/DikesOvertoppingTests/testHelper.f90
-    src/core/tests/DikesOvertoppingTests/loadTests.f90
-    src/core/tests/DikesOvertoppingTests/overtoppingUnitTests.f90
-    src/core/tests/DikesOvertoppingTests/omkeerVariantTests.f90
-    src/core/tests/DikesOvertoppingTests/readCrossSectionForTests.f90
-    src/core/tests/DikesOvertoppingTests/roughnessTests.f90
-    src/core/tests/DikesOvertoppingTests/dllFewsTests.f90
-    src/core/tests/DikesOvertoppingTests/dllTests.f90
+file(GLOB dikes_overs_test_files "src/core/tests/DikesOvertoppingTests/*.[fF]90")
+add_executable(unitTestProgram ${dikes_overs_test_files}
     src/core/tests/unitTests/unitTestsProgram.F90
-    src/core/external/throwexception.f90
     ${VersionFilesOutputVariable}
 )
 
-target_link_libraries(unitTestProgram ${sharedLibName} DikesOvertoppingLib HRtools FeedbackDll Feedback)
+target_link_libraries(unitTestProgram ${sharedLibName}
+    DikesOvertoppingLib HRtools FeedbackDll Feedback HRtools)
 
 add_executable(runOvertopping
     src/core/exe/runOvertopping.f90
