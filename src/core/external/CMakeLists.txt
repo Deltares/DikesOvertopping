@@ -1,7 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
 # set minimum cmake version
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 # project name and language
 project(DikesOvertopping LANGUAGES Fortran)
