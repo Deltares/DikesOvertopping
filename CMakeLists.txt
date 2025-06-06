@@ -56,7 +56,71 @@ generate_product_version(
     ORIGINAL_FILENAME ${ver_git_commit_hash}
 )
 
-add_subdirectory(src/core/external)
+set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
+
+add_compile_definitions(maxParallelThreads=96)
+
+add_library(HRtools
+  STATIC
+    src/core/external/Fortran-Common-Library_src/tools/precision.f90
+    src/core/external/Fortran-Common-Library_src/tools/utilities.f90
+    src/core/external/Fortran-Common-Library_src/tools/errorMessages.f90
+    src/core/external/Fortran-Common-Library_src/tools/equalReals.f90
+    src/core/external/throwexception.f90
+)
+
+set_target_properties(HRtools
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE 1
+)
+
+add_library(HRgeneral
+  STATIC
+    src/core/external/versionInfo.f90
+    src/core/external/Fortran-Common-Library_src/general/vectorUtilities.f90
+    src/core/external/Fortran-Common-Library_src/general/waveParametersUtilities.f90
+    src/core/external/Fortran-Common-Library_src/general/angleUtilities.f90
+    src/core/external/Fortran-Common-Library_src/ftnunit/ftnunit.f90  
+    src/core/external/Fortran-Common-Library_src/ftnunit/ftnunit_hooks_teamcity.f90  
+)
+
+target_link_libraries(HRgeneral Feedback)
+
+set_target_properties(HRgeneral
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE 1
+)
+
+add_library(FeedbackDll
+  SHARED
+    src/core/external/Fortran-Common-Library_src/feedback_dll/feedback_parameters.f90
+    src/core/external/Fortran-Common-Library_src/feedback_dll/feedbackDLL_implementation.F90
+    src/core/external/Fortran-Common-Library_src/feedback_dll/feedbackDLL.f90
+    ${VersionFilesOutputVariable}
+)
+
+set_target_properties(FeedbackDll
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE 1
+)
+
+find_package(OpenMP)
+if(OpenMP_Fortran_FOUND)
+    target_link_libraries(FeedbackDll PUBLIC HRtools OpenMP::OpenMP_Fortran)
+endif()
+
+add_library(Feedback
+  STATIC
+    src/core/external/Fortran-Common-Library_src/feedback/feedback.f90
+)
+
+set_target_properties(Feedback
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE 1
+)
+
+target_link_libraries(Feedback HRtools FeedbackDll)
+
 
 add_library(DikesOvertoppingLib
   STATIC
