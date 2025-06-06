@@ -45,6 +45,20 @@ if(UNIX)
     endif()
 endif(UNIX)
 
+include("${CMAKE_CURRENT_SOURCE_DIR}/src/cmake/version_number.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/src/cmake/generate_product_version.cmake")
+set_version_numbers("src/version_number.ini")
+generate_product_version(
+    VersionFilesOutputVariable
+    NAME "Dikes  Overtopping"
+    ICON "${PROJECT_SOURCE_DIR}/src/default.ico"
+    COMPANY_NAME "Deltares and State of the Netherlands"
+    VERSION_MAJOR ${ver_major}
+    VERSION_MINOR ${ver_minor}
+    VERSION_PATCH ${ver_patch}
+    ORIGINAL_FILENAME ${ver_git_commit_hash}
+)
+
 add_subdirectory(src/core/external)
 
 add_library(DikesOvertoppingLib
@@ -116,6 +130,7 @@ endif()
 add_library(${sharedLibName}
   SHARED
     src/core/dllDikesOvertopping/dllOvertopping.f90
+    ${VersionFilesOutputVariable}
 )
 
 set_target_properties(${sharedLibName}
@@ -138,12 +153,14 @@ add_executable(unitTestProgram
     src/core/tests/DikesOvertoppingTests/dllTests.f90
     src/core/tests/unitTests/unitTestsProgram.F90
     src/core/external/throwexception.f90
+    ${VersionFilesOutputVariable}
 )
 
 target_link_libraries(unitTestProgram ${sharedLibName} DikesOvertoppingLib HRtools FeedbackDll Feedback)
 
 add_executable(runOvertopping
     src/core/exe/runOvertopping.f90
+    ${VersionFilesOutputVariable}
 )
 target_link_libraries(runOvertopping DikesOvertoppingLib FeedbackDll Feedback)
 
