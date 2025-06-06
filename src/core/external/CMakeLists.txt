@@ -1,3 +1,25 @@
+# Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
+#
+# This file is part of the Dikes Overtopping Kernel.
+#
+# The Dikes Overtopping Kernel is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# All names, logos, and references to "Deltares" are registered trademarks of
+# Stichting Deltares and remain full property of Stichting Deltares at all times.
+# All rights reserved.
+#
+
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
 # set minimum cmake version
@@ -21,6 +43,20 @@ if(UNIX)
 endif(UNIX)
 
 add_compile_definitions(maxParallelThreads=96)
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/version_number.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_product_version.cmake")
+set_version_numbers("version_number.ini")
+generate_product_version(
+    VersionFilesOutputVariable
+    NAME "Dikes Overtopping"
+    ICON "${PROJECT_SOURCE_DIR}/default.ico"
+    COMPANY_NAME "Deltares and State of the Netherlands"
+    VERSION_MAJOR ${ver_major}
+    VERSION_MINOR ${ver_minor}
+    VERSION_PATCH ${ver_patch}
+    ORIGINAL_FILENAME ${ver_git_commit_hash}
+)
 
 add_library(HRtools
   STATIC
@@ -58,6 +94,7 @@ add_library(FeedbackDll
     Fortran-Common-Library_src/feedback_dll/feedback_parameters.f90
     Fortran-Common-Library_src/feedback_dll/feedbackDLL_implementation.F90
     Fortran-Common-Library_src/feedback_dll/feedbackDLL.f90
+    ${VersionFilesOutputVariable}
 )
 
 set_target_properties(FeedbackDll

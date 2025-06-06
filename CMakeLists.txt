@@ -50,7 +50,7 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/src/cmake/generate_product_version.cmake")
 set_version_numbers("src/version_number.ini")
 generate_product_version(
     VersionFilesOutputVariable
-    NAME "Dikes  Overtopping"
+    NAME "Dikes Overtopping"
     ICON "${PROJECT_SOURCE_DIR}/src/default.ico"
     COMPANY_NAME "Deltares and State of the Netherlands"
     VERSION_MAJOR ${ver_major}
