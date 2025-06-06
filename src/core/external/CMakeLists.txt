@@ -30,15 +30,12 @@ project(DikesOvertopping LANGUAGES Fortran)
 
 #set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-if(WIN32)
-    set(openmp_flag /Qopenmp)
-endif(WIN32)
 if(UNIX)
     if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-        set(CMAKE_Fortran_FLAGS "-O2 -cpp -ffree-line-length-none -fopenmp -fPIC -fcray-pointer ")
+        set(CMAKE_Fortran_FLAGS "-O2 -cpp -ffree-line-length-none -fPIC -fcray-pointer ")
     endif()
     if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        set(CMAKE_Fortran_FLAGS "-O2 -fpp -qopenmp ")
+        set(CMAKE_Fortran_FLAGS "-O2 -fpp ")
     endif()
 endif(UNIX)
 
@@ -101,12 +98,11 @@ set_target_properties(FeedbackDll
     PROPERTIES
       POSITION_INDEPENDENT_CODE 1
 )
-target_link_libraries(FeedbackDll HRtools)
 
-if(WIN32)
-    set_target_properties(FeedbackDll PROPERTIES COMPILE_FLAGS ${openmp_flag})
-    target_link_options(FeedbackDll PRIVATE ${openmp_flag})
-endif(WIN32)
+find_package(OpenMP)
+if(OpenMP_Fortran_FOUND)
+    target_link_libraries(FeedbackDll PUBLIC HRtools OpenMP::OpenMP_Fortran)
+endif()
 
 add_library(Feedback
   STATIC

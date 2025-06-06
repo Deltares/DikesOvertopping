@@ -33,15 +33,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
 
-if(WIN32)
-    set(openmp_flag /Qopenmp)
-endif(WIN32)
 if(UNIX)
     if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-        set(CMAKE_Fortran_FLAGS "-O2 -cpp -ffree-line-length-none -fopenmp -fPIC -fcray-pointer ")
+        set(CMAKE_Fortran_FLAGS "-O2 -cpp -ffree-line-length-none -fPIC -fcray-pointer ")
     endif()
     if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        set(CMAKE_Fortran_FLAGS "-O2 -fpp -qopenmp ")
+        set(CMAKE_Fortran_FLAGS "-O2 -fpp ")
     endif()
 endif(UNIX)
 
@@ -119,6 +116,7 @@ set_target_properties(DikesOvertoppingLib
 )
 
 target_link_libraries(DikesOvertoppingLib FeedbackDll Feedback HRgeneral)
+add_dependencies(DikesOvertoppingLib FeedbackDll Feedback HRgeneral)
 
 
 if(WIN32)
@@ -139,6 +137,7 @@ set_target_properties(${sharedLibName}
 )
 
 target_link_libraries(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
+add_dependencies(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
 
 add_executable(unitTestProgram
     src/core/tests/DikesOvertoppingTests/crossSectionsTests.f90
