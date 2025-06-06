@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -23,8 +23,6 @@
 !> @file
 !! Feedback library: error messaging and progress reporting
 !<
-!
-! $Id$
 !
 !> @defgroup Feedback Feedback library
 !! The feedback library provides a mechanism for reporting errors and progress

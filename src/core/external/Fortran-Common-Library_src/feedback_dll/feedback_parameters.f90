@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -23,9 +23,6 @@
 !> @file
 !! Feedback parameters: parameters needed bij feedback and feedback_dll
 !<
-!
-! $Id$
-!
 !
 module feedback_parameters
     integer, parameter  :: onfatalerrorStop                   = 1   !< Action on fatal error: exit the program

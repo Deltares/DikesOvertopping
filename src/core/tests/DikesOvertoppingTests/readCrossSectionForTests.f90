@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Dikes Overtopping Kernel.
 !
@@ -23,8 +23,6 @@
 !> @file
 !! Contains the module readCrossSectionForTests. This module is used in the tests of the Overtopping dll
 !
-!
-! $Id$
 !
 !> 
 !!Module for reading the cross section file for testing the Overtopping kernel

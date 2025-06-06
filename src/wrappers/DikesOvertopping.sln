@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWrapper", ".\TestWrapper.csproj", "{FFBB9716-714F-43B4-B52B-79DC13DFEF84}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{168B8339-9734-4610-AF70-B0E0318D7EB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Debug|Win32.ActiveCfg = Debug|x86
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Debug|Win32.Build.0 = Debug|x86
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Debug|x64.ActiveCfg = Debug|x64
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Debug|x64.Build.0 = Debug|x64
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Release|Win32.ActiveCfg = Release|x86
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Release|Win32.Build.0 = Release|x86
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Release|x64.ActiveCfg = Release|x64
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FFBB9716-714F-43B4-B52B-79DC13DFEF84} = {168B8339-9734-4610-AF70-B0E0318D7EB7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91EC82A4-6F82-49BD-9567-D7CF1B6DC09C}
+	EndGlobalSection
+EndGlobal

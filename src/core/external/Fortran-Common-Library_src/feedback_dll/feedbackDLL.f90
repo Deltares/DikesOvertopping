@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -32,9 +32,6 @@
 !! and let feedback initialise this dll and let feedback only print using this dll,
 !! all output ends up at the right location.
 !<
-!
-! $Id$
-!
 !
 module feedbackDLL
     implicit none

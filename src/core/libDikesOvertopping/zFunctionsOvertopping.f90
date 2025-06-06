@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Dikes Overtopping Kernel.
 !
@@ -23,8 +23,6 @@
 !> @file
 !! This file contains the limit state functions for wave overtopping within VTV
 !<
-!
-! $Id$
 !
 !>
 !! Module for the Limit State Functions (Z-functions) for wave overtopping

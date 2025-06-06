@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -24,8 +24,6 @@
 !! This file contains a module with a struct to hold error and validation messages
 !! and a switch between dutch and english messages
 !<
-!
-! $Id$
 !
 !>
 !! Module with a struct for error and validation messages and a switch between dutch and english messages

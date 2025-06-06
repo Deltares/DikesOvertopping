@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -44,8 +44,6 @@
 !       - current implementation incomplete! Variable
 !         "stopped" must be properly used.
 !
-!
-!     $Id$
 !
 ! ftnunit --
 !     Core module for ftnunit

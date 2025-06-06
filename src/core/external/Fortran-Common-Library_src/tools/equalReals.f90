@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -23,8 +23,6 @@
 !> @file
 !! This file contains a module with functions to test quality of reals
 !<
-!
-! $Id$
 !
 !>
 !! Module with functions to test quality of reals

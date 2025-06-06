@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -22,8 +22,6 @@
 
 !> @file vectorUtilities.f90
 !!  Implement various utility functions for vectors
-!
-! $Id$
 !
 !>
 !! Module with vector utility functions

@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Dikes Overtopping Kernel.
 !
@@ -22,8 +22,6 @@
 
 !> @file
 !! Contains the module dllTests of the DikesOvertopping dll
-!
-! $Id$
 !
 !> 
 !! Module, holding tests of the functions of the dll.
@@ -52,8 +50,7 @@ public :: allOvertoppingDllTests
 contains
 
 subroutine allOvertoppingDllTests
-    call testWithLevel(overtoppingDllTest, 'General; Test functions versionNumber, calculateQoF, calcZValue in the dll', &
-        1, "version number not complete")
+    call testWithLevel(overtoppingDllTest, 'General; Test functions versionNumber, calculateQoF, calcZValue in the dll', 1)
     call testWithLevel(overtoppingDikeInProfileTest,       'General; Test a dikeheight at one of the profile points', 1)
     call testWithLevel(influenceRoughnessTest,             'General; Test influence roughness', 1)
     call testWithLevel(overtoppingValidationTest,          'General; Test validation of incorrect profile and negative model factor', 1)
@@ -110,10 +107,8 @@ subroutine overtoppingDllTest
     call init_modelfactors_and_load(modelFactors, load)
     criticalOvertoppingRate        = 1.0d-3
 
-#if defined _WIN32 || defined _WIN64
     call versionNumber(version)
-    call assert_false('0.0.0.0' == version, "version not set")
-#endif
+    call assert_equal('25.1.1.0', version, "version not set")
 
     allocate(geometryF%xcoords(npoints), geometryF%ycoords(npoints), geometryF%roughness(npoints-1))
     do i = 1, npoints

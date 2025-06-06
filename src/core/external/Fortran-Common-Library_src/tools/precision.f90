@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -27,8 +27,6 @@
 !!  <b>Note:</b> Use the parameter "wp" to set the working precision for using
 !!  routines.
 !<
-!
-! $Id$
 !
 !>
 !! Module with parameters for KINDs and mathematical constants

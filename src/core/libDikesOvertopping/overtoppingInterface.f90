@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Dikes Overtopping Kernel.
 !
@@ -24,8 +24,6 @@
 !! This file contains the parameters and types (structs)
 !! as part of the interface to and from dllOvertopping
 !<
-!
-! $Id$
 !
 !>
 !! Module for the interface of dllOvertopping

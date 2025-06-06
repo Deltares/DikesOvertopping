@@ -1,4 +1,4 @@
-! Copyright (C) Stichting Deltares and State of the Netherlands 2023. All rights reserved.
+! Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
 !
 ! This file is part of the Hydra Ring Application.
 !
@@ -22,9 +22,6 @@
 
 !> @file
 !!     Module waveParametersUtilities for wave parameter computations
-!
-!
-! $Id$
 !
 !
 !> Module to calculate the wave steepness or the wave period
