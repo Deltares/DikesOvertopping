@@ -1,5 +1,27 @@
+# Copyright (C) Stichting Deltares and State of the Netherlands 2025. All rights reserved.
+#
+# This file is part of the Dikes Overtopping Kernel.
+#
+# The Dikes Overtopping Kernel is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# All names, logos, and references to "Deltares" are registered trademarks of
+# Stichting Deltares and remain full property of Stichting Deltares at all times.
+# All rights reserved.
+#
+
 # set minimum cmake version
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 # project name and language
 project(DikesOvertopping LANGUAGES Fortran)
@@ -98,14 +120,6 @@ set_target_properties(${sharedLibName}
 
 target_link_libraries(${sharedLibName} DikesOvertoppingLib FeedbackDll Feedback HRtools)
 
-if(WIN32)
-    set(extra_files
-        tests/DikesOvertoppingTests/dllTests.f90 
-        tests/DikesOvertoppingTests/dllFewsTests.f90)
-else()
-    set(extra_files )
-endif()
-
 add_executable(unitTestProgram
     tests/DikesOvertoppingTests/crossSectionsTests.f90
     tests/DikesOvertoppingTests/overtoppingTests.f90
@@ -119,7 +133,6 @@ add_executable(unitTestProgram
     tests/DikesOvertoppingTests/dllTests.f90
     tests/unitTests/unitTestsProgram.F90
     external/throwexception.f90
-    ${extra_files}
 )
 
 target_link_libraries(unitTestProgram ${sharedLibName} DikesOvertoppingLib HRtools FeedbackDll Feedback)
