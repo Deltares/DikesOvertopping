@@ -45,7 +45,7 @@ module dllOvertopping
     use precision,                  only : wp, set_nan
     use typeDefinitionsOvertopping, only : tpGeometry, tpLoad, tpOvertoppingInput
     use overtoppingInterface,       only : OvertoppingGeometryType, OvertoppingGeometryTypeF
-    use versionInfo,                only : tpVersionStruct, getFileVersion
+    use versionInfo,                only : getFileVersion
     use mainModuleOvertopping,      only : initGeometries, setupGeometries, cleanup_Geometry
     use, intrinsic :: iso_c_binding
 
@@ -555,13 +555,10 @@ subroutine versionNumber(version)
 !DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"versionNumber" :: versionNumber
     character(len=*), intent(out) :: version !< version number
     !
-    ! locals
-    !
-    type(tpVersionStruct)           :: versionStruct    !< Will hold the version info
     !
     !==============================================================================
 
-    version = getFileVersion("dllDikesOvertopping.dll" // c_null_char, versionStruct)
+    version = getFileVersion()
 
 end subroutine versionNumber
 
