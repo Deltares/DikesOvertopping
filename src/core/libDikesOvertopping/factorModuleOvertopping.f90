@@ -265,8 +265,8 @@
 
    subroutine calculateInfluenceFactorRoughness()
       real(kind=wp)              :: sum_horzLengths !< sum of all horzLengths
-      real(kind=wp), parameter   :: one = 1.0_wp    !< constant in comparision with breaker parameters
-      real(kind=wp), parameter   :: ten = 10.0_wp   !< constant in comparision with breaker parameters
+      real(kind=wp), parameter   :: one = 1.0_wp    !< constant in comparison with breaker parameters
+      real(kind=wp), parameter   :: ten = 10.0_wp   !< constant in comparison with breaker parameters
 
       if (geometry%Coordinates%N == 2) then
           gamma%gammaF = rFactors(1)
