@@ -658,4 +658,12 @@ subroutine cleanupGeometry(geometries)
     call cleanup_Geometry(geometries)
 end subroutine cleanupGeometry
 
+subroutine GeometriesSetup(geometries)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"GeometriesSetup" :: GeometriesSetup
+    use mainModuleOvertopping, only : setupGeometries
+    use typeDefinitionsOvertopping, only : tpGeometries
+    type(tpGeometries), target, intent(inout) :: geometries
+    call setupGeometries(Geometries)
+end subroutine GeometriesSetup
+
 end module dllOvertopping
