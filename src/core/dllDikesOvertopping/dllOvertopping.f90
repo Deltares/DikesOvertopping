@@ -635,4 +635,27 @@ subroutine getLanguageDll(lang)
     call getLanguage(lang)
 end subroutine getLanguageDll
 
+subroutine calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQoHPC" :: calculateQoHPC
+    use typeDefinitionsOvertopping, only : tpOvertopping
+    use typeDefinitionsOvertopping, only : tpGeometries
+    use errorMessages,              only : tMessage
+    real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
+    type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
+    type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
+    type (tpGeometries), target,   intent(inout) :: geometries     !< structure with geometry data
+    type (tpLoad),                 intent(in)    :: load           !< structure with load parameters
+    type(tMessage),                intent(inout) :: error          !< error struct
+
+    call calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+end subroutine calculateQoHPC
+
+subroutine cleanupGeometry(geometries)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"cleanupGeometry" :: cleanupGeometry
+    use typeDefinitionsOvertopping, only : tpGeometries
+    type(tpGeometries), intent(inout) :: geometries
+
+    call cleanup_Geometry(geometries)
+end subroutine cleanupGeometry
+
 end module dllOvertopping

@@ -132,7 +132,6 @@
 
    interface
       module subroutine cleanup_Geometry(geometries)
-!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"cleanupGeometry" :: cleanupGeometry
          type(tpGeometries), intent(inout) :: geometries
       end subroutine cleanup_Geometry
    end interface
