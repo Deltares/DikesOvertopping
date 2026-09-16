@@ -174,7 +174,7 @@ function getForeshoreCase () result(foreshoreCase)
             B = geometry%CoordDiff%x(i)
 
             ! determine if the berm segment is a foreshore
-            if (B >= load%L0) then
+            if (B >= load%L0 .or. geometry%isAdaptedToForeshore) then
 
                ! compare height of the foreshore to local water level
                if (load%h < geometry%Coordinates%y(i)) then

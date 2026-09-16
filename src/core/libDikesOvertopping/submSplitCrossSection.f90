@@ -94,6 +94,7 @@ module procedure splitCrossSection
                ! adapt berm width to B=L0 for cross section with foreshores
                horzShift = B-L0
                geometrySectionF%Coordinates%x(1:i)   = geometrySectionF%Coordinates%x(1:i)   + horzShift
+               geometrySectionF%isAdaptedToForeshore = .true.
 
             endif
 
