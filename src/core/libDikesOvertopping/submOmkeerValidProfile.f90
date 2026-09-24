@@ -274,7 +274,7 @@ subroutine BermCheckLoopLowUp()
 
     do i = iLow + 1, iUp - 1
         if (.not. omkeerProps%isBerm(i) ) then
-            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i)
+            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i) + 1d-6
             call calculateQo_HPC(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, error )
             if (error%errorCode /= 0) return ! only in very exceptional cases
             omkeerProps%ZProfile(i) = nextDikeHeight
