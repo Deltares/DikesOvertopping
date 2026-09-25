@@ -596,7 +596,7 @@ subroutine input_j_f(x, y, roughness, normal, geometryF, modelFactorsJ, modelFac
     real(kind=wp), intent(in) :: x(:), y(:), roughness(:), normal, modelFactorsJ(:)
     real(kind=wp), intent(in), optional :: loadJ(:)
     type(tpOvertoppingInput), intent(out) :: modelFactorsF
-    type(OvertoppingGeometryTypeF), intent(out) :: geometryF
+    type(OvertoppingGeometryTypeF), intent(inout) :: geometryF
     type(tpLoad), intent(out), optional :: loadF
 
     geometryF%nPoints = size(x)
