@@ -168,7 +168,7 @@ subroutine profileInStructure(coordinates, dikeHeight, coordsAdjusted, error)
         enddo
 
         !
-        ! allocate xCoordsAdjusted and zCoordsAdjusted and check result
+        ! allocate xCoordsAdjusted and check result
         !
         call reallocAdjustedCoordinates(CoordsAdjusted, error)
         if (error%errorCode == 0) then

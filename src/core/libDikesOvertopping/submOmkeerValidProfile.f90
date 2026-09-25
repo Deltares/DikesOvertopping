@@ -282,7 +282,7 @@ subroutine BermCheckLoopLowUp()
 
     do i = iLow + 1, iUp - 1
         if (.not. omkeerProps%isBerm(i) ) then
-            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i) !+ 1d-6
+            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i)
             call calculateQo_berm(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, i , error)
             if (error%errorCode /= 0) return ! only in very exceptional cases
             omkeerProps%ZProfile(i) = nextDikeHeight
@@ -367,52 +367,10 @@ subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index
     type(tpCoordinatePair),  intent(inout)  :: coordsAdjusted  !< coordinates in the adjusted profile
     integer,                 intent(in)     :: index           !< index in profile (after berm segment)
 
-    ! locals
-    !
-    real(kind=wp)     :: auxiliaryHeightBerm    !< auxiliary height berm of the profile
-    real(kind=wp)     :: auxiliaryHeight        !< auxiliary height for the profile
-    real(kind=wp)     :: slope                  !< slope of the profile
-    integer           :: i                      !< do-loop counter
-    logical           :: previousWasBerm        !< previous segment is a berm
-
-    error%errorCode = 1
-    if (Coordinates%N < 2) then
-        call GetMSGdimension_cross_section_less_than_2(error%Message)
-        return
-    endif
-
-    CoordsAdjusted%n = Coordinates%N
-    previousWasBerm = .false.
-    do i = 2, Coordinates%N - 1
-        slope = (coordinates%y(i+1) - coordinates%y(i  )) / (coordinates%x(i+1) - coordinates%x(i  ))
-        if (slope < slope_min .and. i < Coordinates%N - 1) then
-            !
-            ! the next segment of the cross section is a berm segment
-            auxiliaryHeightBerm = interpolateLine(coordinates%x(i+1), coordinates%x(i+2), coordinates%y(i+1), coordinates%y(i+2), coordinates%x(i+1) + xDiff_min, error)
-            if (error%errorCode /= 0) return
-            if (dikeHeight < auxiliaryHeightBerm) then
-                CoordsAdjusted%N = merge(i-1, i, previousWasBerm)
-                exit
-            endif
-        else
-            auxiliaryHeight = interpolateLine(coordinates%x(i-1), coordinates%x(i), coordinates%y(i-1), coordinates%y(i), coordinates%x(i-1) + xDiff_min, error)
-            if (error%errorCode /= 0) return
-            if (dikeHeight < auxiliaryHeight) then
-                CoordsAdjusted%N = i - 1
-                exit
-            elseif (equalRealsRelative(dikeHeight, coordinates%y(i), 1d-12)) then
-                CoordsAdjusted%N = i
-                exit
-            elseif (dikeHeight < coordinates%y(i)) then
-                CoordsAdjusted%N = i
-                exit
-            endif
-        endif
-        previousWasBerm = slope < slope_min
-    enddo
+    CoordsAdjusted%N = index + 1
 
     !
-    ! allocate xCoordsAdjusted and zCoordsAdjusted and check result
+    ! allocate xCoordsAdjusted and check result
     !
     call reallocAdjustedCoordinates(CoordsAdjusted, error)
     if (error%errorCode == 0) then
@@ -422,18 +380,8 @@ subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index
 
         ! last segment of the profile
         CoordsAdjusted%y(CoordsAdjusted%N) = dikeHeight
-        CoordsAdjusted%x(CoordsAdjusted%N) = interpolateLine(coordinates%y(CoordsAdjusted%N-1), coordinates%y(CoordsAdjusted%N), &
-            coordinates%x(CoordsAdjusted%N-1), coordinates%x(CoordsAdjusted%N), dikeHeight, error)
-        if (error%errorCode /= 0) return
-
-        if (CoordsAdjusted%x(CoordsAdjusted%N) < CoordsAdjusted%x(CoordsAdjusted%N-1)) then
-            call GetMSGadjusted_xcoordinates(error%Message)
-            return
-        endif
-    else
-        return
+        CoordsAdjusted%x(CoordsAdjusted%N) = coordinates%x(CoordsAdjusted%N-1) + xDiff_min
     endif
-    error%errorCode = 0
 end subroutine profileInStructureBerm
 
 
