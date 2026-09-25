@@ -7,7 +7,6 @@ Here you find the Dikes Overtopping Kernel.
 Hints for compiling / debugging / releasing can be found [here](src/readme.md).
 
 ## Contact
-* Tom The
 * Hans de Waal
 * Karolina Wojciechowska
 * Edwin Spee
