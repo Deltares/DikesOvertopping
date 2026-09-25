@@ -28,8 +28,9 @@ submodule (omkeerVariantModule) submOmkeerValidProfile
     use zFunctionsOvertopping
     use parametersOvertopping
     use vectorUtilities, only : logLinearInterpolate
-    use mainModuleOvertopping, only : setupGeometries, cleanup_Geometry
-
+    use mainModuleOvertopping,       only : calculateOvertopping, setupGeometries, cleanup_Geometry
+    use vectorUtilities,             only : interpolateLine
+    implicit none
 contains
 
 !>
@@ -281,8 +282,8 @@ subroutine BermCheckLoopLowUp()
 
     do i = iLow + 1, iUp - 1
         if (.not. omkeerProps%isBerm(i) ) then
-            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i)
-            call calculateQo_HPC(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, error )
+            nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i) !+ 1d-6
+            call calculateQo_berm(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, i , error)
             if (error%errorCode /= 0) return ! only in very exceptional cases
             omkeerProps%ZProfile(i) = nextDikeHeight
             omkeerProps%dischargeProfile(i) = overtopping%Qo
@@ -311,5 +312,152 @@ subroutine BermCheckLoopLowUp()
 end subroutine BermCheckLoopLowUp
 
 end subroutine OmkeerValidProfile
+
+!>
+!! Subroutine to calculate the overtopping discharge with the Overtopping dll
+!! @ingroup LibOvertopping
+subroutine calculateQo_berm(dikeHeight, modelFactors, overtopping, load, geometries, index, error)
+    real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
+    type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
+    type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
+    type (tpGeometries), target,   intent(inout) :: geometries     !< structure with geometry data
+    type (tpLoad),                 intent(in)    :: load           !< structure with load parameters
+    integer,                       intent(in)    :: index          !< index in profile (after berm segment)
+    type(tMessage),                intent(inout) :: error          !< error struct
+
+    type (tpGeometry), pointer    :: geometryAdjusted       !< structure for the adjusted profile
+    type (tpGeometry), pointer    :: geometry               !< structure for the base profile
+
+    ! ==========================================================================================================
+    !
+    !   Initialise
+    !
+
+    geometryAdjusted => geometries%adjWithDikeHeight
+    geometry         => geometries%base
+
+    call profileInStructureBerm(geometry%Coordinates, dikeHeight, geometries%CoordsAdjusted, index, error)
+
+    if (error%errorCode == 0) then
+        call initializeGeometry (geometry%psi, geometries%CoordsAdjusted, &
+                                 geometry%roughnessFactors, geometryAdjusted, error)
+    endif
+
+    if (error%errorCode == 0) then
+        ! first time we use load
+        call calculateOvertopping (geometryAdjusted, load, modelFactors, overtopping, error)
+    endif
+
+    if (error%errorCode /= 0) then
+        overtopping%Qo = tiny(1.0d0)
+        overtopping%z2 = 0d0
+    endif
+
+    geometries%geometrySectionBNoBerms%Coordinates%N = 0
+    geometries%geometrySectionFNoBerms%Coordinates%N = 0
+end subroutine calculateQo_berm
+
+!>
+!! Subroutine to fill the profile in a structure and call the adjustment function of the profile due to a desired dike height
+!! @ingroup LibOvertopping
+subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index, error)
+    type(tpCoordinatePair),  intent(in)     :: coordinates     !< structure for the profile
+    real(kind=wp),           intent(in)     :: dikeHeight      !< dike height
+    type(tMessage),          intent(inout)  :: error           !< error struct
+    type(tpCoordinatePair),  intent(inout)  :: coordsAdjusted  !< coordinates in the adjusted profile
+    integer,                 intent(in)     :: index           !< index in profile (after berm segment)
+
+    ! locals
+    !
+    real(kind=wp)     :: auxiliaryHeightToe     !< auxiliary height toe of the profile
+    real(kind=wp)     :: auxiliaryHeightBerm    !< auxiliary height berm of the profile
+    real(kind=wp)     :: auxiliaryHeight        !< auxiliary height for the profile
+    real(kind=wp)     :: slope                  !< slope of the profile
+    integer           :: i                      !< do-loop counter
+    logical           :: previousWasBerm        !< previous segment is a berm
+
+    error%errorCode = 1
+    if (Coordinates%N < 2) then
+        call GetMSGdimension_cross_section_less_than_2(error%Message)
+        return
+    endif
+
+    ! the minimal distance between two x-coordinates of the cross section is xDiff_min
+    ! compute the height of the cross section on the point xDiff_min meters after the toe
+
+    auxiliaryHeightToe = interpolateLine(coordinates%x(1), coordinates%x(2), coordinates%y(1), coordinates%y(2), coordinates%x(1) + xDiff_min, error)
+    if (error%errorCode /= 0) return
+
+    ! First the situation where the new dike height is close to the dike toe
+    if (dikeHeight <= auxiliaryHeightToe) then
+        CoordsAdjusted%N = 2
+        call reallocAdjustedCoordinates(CoordsAdjusted, error)
+        if (error%errorCode == 0) then
+            CoordsAdjusted%y(2) = dikeHeight
+            CoordsAdjusted%x(2) = interpolateLine(coordinates%y(1), coordinates%y(2), coordinates%x(1), coordinates%x(2), dikeHeight, error)
+            if (error%errorCode /= 0) return
+            CoordsAdjusted%x(1) = CoordsAdjusted%x(2) - xDiff_min
+            CoordsAdjusted%y(1) = interpolateLine(coordinates%x(1), coordinates%x(2), coordinates%y(1), coordinates%y(2), CoordsAdjusted%x(1), error)
+            if (error%errorCode /= 0) return
+        else
+            return
+        endif
+    else
+        CoordsAdjusted%n = Coordinates%N
+        previousWasBerm = .false.
+        do i = 2, Coordinates%N - 1
+            slope = (coordinates%y(i+1) - coordinates%y(i  )) / (coordinates%x(i+1) - coordinates%x(i  ))
+            if (slope < slope_min .and. i < Coordinates%N - 1) then
+                !
+                ! the next segment of the cross section is a berm segment
+                auxiliaryHeightBerm = interpolateLine(coordinates%x(i+1), coordinates%x(i+2), coordinates%y(i+1), coordinates%y(i+2), coordinates%x(i+1) + xDiff_min, error)
+                if (error%errorCode /= 0) return
+                if (dikeHeight < auxiliaryHeightBerm) then
+                    CoordsAdjusted%N = merge(i-1, i, previousWasBerm)
+                    exit
+                endif
+            else
+                auxiliaryHeight = interpolateLine(coordinates%x(i-1), coordinates%x(i), coordinates%y(i-1), coordinates%y(i), coordinates%x(i-1) + xDiff_min, error)
+                if (error%errorCode /= 0) return
+                if (dikeHeight < auxiliaryHeight) then
+                    CoordsAdjusted%N = i - 1
+                    exit
+                elseif (equalRealsRelative(dikeHeight, coordinates%y(i), 1d-12)) then
+                    CoordsAdjusted%N = i
+                    exit
+                elseif (dikeHeight < coordinates%y(i)) then
+                    CoordsAdjusted%N = i
+                    exit
+                endif
+            endif
+            previousWasBerm = slope < slope_min
+        enddo
+
+        !
+        ! allocate xCoordsAdjusted and zCoordsAdjusted and check result
+        !
+        call reallocAdjustedCoordinates(CoordsAdjusted, error)
+        if (error%errorCode == 0) then
+
+            ! all segments of the profile except the last
+            call copyCoordinates(coordinates, CoordsAdjusted)
+
+            ! last segment of the profile
+            CoordsAdjusted%y(CoordsAdjusted%N) = dikeHeight
+            CoordsAdjusted%x(CoordsAdjusted%N) = interpolateLine(coordinates%y(CoordsAdjusted%N-1), coordinates%y(CoordsAdjusted%N), &
+                coordinates%x(CoordsAdjusted%N-1), coordinates%x(CoordsAdjusted%N), dikeHeight, error)
+            if (error%errorCode /= 0) return
+
+            if (CoordsAdjusted%x(CoordsAdjusted%N) < CoordsAdjusted%x(CoordsAdjusted%N-1)) then
+                call GetMSGadjusted_xcoordinates(error%Message)
+                return
+            endif
+        else
+            return
+        endif
+    endif
+    error%errorCode = 0
+end subroutine profileInStructureBerm
+
 
 end submodule submOmkeerValidProfile

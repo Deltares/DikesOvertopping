@@ -45,7 +45,7 @@ module zFunctionsOvertopping
 
     private
 
-    public :: calculateQo_HPC, zFuncLogRatios, profileInStructure
+    public :: calculateQo_HPC, zFuncLogRatios, profileInStructure, reallocAdjustedCoordinates
 
 contains
 
