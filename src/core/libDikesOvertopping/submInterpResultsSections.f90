@@ -28,9 +28,16 @@ contains
 !! interpolate results for split cross sections
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure interpolateResultsSections
-!***********************************************************************************************************
+module subroutine interpolateResultsSections(geometry, L0, NwideBerms, overtoppingB, overtoppingF, overtopping, error)
    implicit none
+   type (tpGeometry),      intent(in   ) :: geometry       !< structure with geometry data
+   real(kind=wp),          intent(in   ) :: L0             !< wave length (m)
+   integer,                intent(in   ) :: NwideBerms     !< number of wide berms
+   type (tpOvertopping),   intent(in   ) :: overtoppingB   !< structure with overtopping results ordinary berms
+   type (tpOvertopping),   intent(in   ) :: overtoppingF   !< structure with overtopping results foreshores
+   type (tpOvertopping),   intent(  out) :: overtopping    !< structure with combined overtopping results
+   type (tMessage),        intent(inout) :: error          !< error struct
+!***********************************************************************************************************
 !
    integer        :: i              !< counter dike segments
    real(kind=wp)  :: B              !< width of berm segment (m)
@@ -88,6 +95,6 @@ module procedure interpolateResultsSections
       call GetMSGinterpolation_error_split_cross_sections(error%Message)
    endif
 
-end procedure interpolateResultsSections
+end subroutine interpolateResultsSections
 
 end submodule submInterpResultsSections

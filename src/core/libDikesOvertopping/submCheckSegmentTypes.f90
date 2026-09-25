@@ -26,7 +26,9 @@ contains
 
 ! validation routine for segment types
 !!   @ingroup LibOvertopping
-module procedure checkSegmentTypes
+module subroutine checkSegmentTypes(geometry, error)
+   type (tpGeometry), intent(in)   :: geometry     !< structure with geometry data
+   type (tMessage),   intent(inout):: error        !< error struct
 
    ! check segment types
    if (count(geometry%segmentTypes == 3) > 0) then
@@ -50,7 +52,7 @@ module procedure checkSegmentTypes
          call GetMSGfirst_and_last_must_be_slope(error%Message)
       endif
    endif
-end procedure checkSegmentTypes
+end subroutine checkSegmentTypes
 
 end submodule submCheckSegmentTypes
 

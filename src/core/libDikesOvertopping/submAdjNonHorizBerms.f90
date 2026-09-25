@@ -28,9 +28,13 @@ contains
 !! adjust non-horizontal berms
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure adjustNonHorizontalBerms
-!***********************************************************************************************************
+module subroutine adjustNonHorizontalBerms(geometry, geometryFlatBerms, error)
    implicit none
+   type (tpGeometry),   intent(in   ) :: geometry          !< structure with geometry data
+   type (tpGeometry),   intent(inout) :: geometryFlatBerms !< geometry data with horizontal berms
+   type (tMessage),     intent(inout) :: error             !< error
+
+!***********************************************************************************************************
 !
    integer        :: i     !< counter dike segments
    real(kind=wp)  :: hBerm !< average berm height (m)
@@ -100,6 +104,6 @@ module procedure adjustNonHorizontalBerms
 
    endif
 
-end procedure adjustNonHorizontalBerms
+end subroutine adjustNonHorizontalBerms
 
 end submodule submAdjNonHorizBerms

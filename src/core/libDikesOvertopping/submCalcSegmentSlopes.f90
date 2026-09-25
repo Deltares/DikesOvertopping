@@ -28,9 +28,11 @@ contains
 !! calculate the segment slopes
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateSegmentSlopes
-!***********************************************************************************************************
+module subroutine calculateSegmentSlopes(geometry, error)
    implicit none
+   type (tpGeometry),   intent(inout)  :: geometry       !< structure with geometry data
+   type (tMessage),     intent(inout)  :: error          !< error struct
+!***********************************************************************************************************
 
    ! initialize flag for succes and error message
    error%errorCode = 0
@@ -56,7 +58,7 @@ module procedure calculateSegmentSlopes
       endif
    endif
 
-end procedure calculateSegmentSlopes
+end subroutine calculateSegmentSlopes
 
 end submodule submCalcSegmentSlopes
 

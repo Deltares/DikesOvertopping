@@ -28,9 +28,12 @@ contains
 !! merge sequential berms
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure mergeSequentialBerms
-!***********************************************************************************************************
+module subroutine mergeSequentialBerms (geometry, geometryMergedBerms, error)
    implicit none
+   type (tpGeometry),   intent(in   )   :: geometry             !< structure with geometry data
+   type (tpGeometry),   intent(inout)   :: geometryMergedBerms  !< geometry data with merged sequential berms
+   type (tMessage),     intent(inout)   :: error                !< error struct
+!***********************************************************************************************************
 !
    integer  :: i                 !< counter dike segments
    logical  :: sequentialBerms   !< flag for sequential berms
@@ -120,6 +123,6 @@ module procedure mergeSequentialBerms
 
    endif
 
-end procedure mergeSequentialBerms
+end subroutine mergeSequentialBerms
 
 end submodule submMergeSequentialBerms

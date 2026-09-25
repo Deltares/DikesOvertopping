@@ -30,9 +30,18 @@ contains
 !! calculate wave overtopping
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateWaveOvertopping
+module subroutine calculateWaveOvertopping(geometry, geometryFlatBerms, geometryNoBerms, load, z2, gamma, modelFactors, Qo, error)
+    implicit none
+    type (tpGeometry),         intent(in)     :: geometry          !< structure with geometry data
+    type (tpGeometry),         intent(inout)  :: geometryFlatBerms !< structure with geometry data with flat berms
+    type (tpGeometry),         intent(inout)  :: geometryNoBerms   !< structure with geometry data with no berms
+    type (tpLoadX),            intent(inout)  :: load              !< load struct
+    real(kind=wp),             intent(in)     :: z2                !< 2% wave run-up (m)
+    type(tpInfluencefactors),  intent(inout)  :: gamma             !< influence factors
+    type (tpOvertoppingInput), intent(in)     :: modelFactors      !< structure with model factors
+    real(kind=wp),             intent(out)    :: Qo                !< wave overtopping discharge (m3/m per s)
+    type(tMessage),            intent(inout)  :: error             !< error struct
 !***********************************************************************************************************
-   implicit none
 !
    real(kind=wp)     :: tanAlpha          !< representative slope angle
    real(kind=wp)     :: ksi0              !< breaker parameter
@@ -90,6 +99,6 @@ module procedure calculateWaveOvertopping
                                               modelFactors, Qo, error)
    endif
 
-end procedure calculateWaveOvertopping
+end subroutine calculateWaveOvertopping
 
 end submodule submCalcWaveOvertopping

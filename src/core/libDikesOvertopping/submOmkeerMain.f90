@@ -29,7 +29,15 @@ contains
 !! Subroutine with omkeerVariant
 !!
 !! @ingroup dllDikesOvertopping
-module procedure iterateToGivenDischarge
+module subroutine iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, overtopping, error)
+    type(OvertoppingGeometryTypeF), intent(in) :: geometryF      !< struct with geometry and roughness
+    type(tpLoad), intent(in)                   :: load           !< struct with waterlevel and wave parameters
+    real(kind=wp), intent(in)                  :: givenDischarge !< discharge to iterate to
+    real(kind=wp), intent(out)                 :: dikeHeight     !< dike height
+    type(tpOvertoppingInput), intent(inout)    :: modelFactors   !< struct with modelFactors
+    type (tpOvertopping), intent(inout)        :: overtopping    !< structure with overtopping results
+    type(tMessage), intent(inout)              :: error          !< error struct
+
     type (tpCoordinatePair)                    :: coordinates    !< vector with x/y-coordinates
     type (tpGeometry), target                  :: geometry       ! structure with geometry data
 !
@@ -62,6 +70,6 @@ module procedure iterateToGivenDischarge
             deallocate(geometry%parent)
         end if
     endif
-end procedure iterateToGivenDischarge
+end subroutine iterateToGivenDischarge
 
 end submodule submOmkeerMain

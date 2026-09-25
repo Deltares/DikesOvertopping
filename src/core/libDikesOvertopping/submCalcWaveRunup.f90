@@ -28,9 +28,16 @@ contains
 !! calculate wave runup
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateWaveRunup
-!***********************************************************************************************************
+module subroutine calculateWaveRunup(Hm0, ksi0, ksi0Limit, gamma, modelFactors, z2, error)
    implicit none
+   real(kind=wp),             intent(in)     :: Hm0            !< significant wave height (m)
+   real(kind=wp),             intent(in)     :: ksi0           !< breaker parameter
+   real(kind=wp),             intent(in)     :: ksi0Limit      !< limit value breaker parameter
+   type(tpInfluencefactors),  intent(inout)  :: gamma          !< influence factors
+   type (tpOvertoppingInput), intent(in)     :: modelFactors   !< structure with model factors
+   real(kind=wp),             intent(out)    :: z2             !< 2% wave run-up (m)
+   type(tMessage),            intent(inout)  :: error          !< error struct
+!***********************************************************************************************************
 
    ! if applicable adjust influence factors
    call adjustInfluenceFactors (gamma, 1, ksi0, ksi0Limit, error)
@@ -50,6 +57,6 @@ module procedure calculateWaveRunup
 
    endif
 
-end procedure calculateWaveRunup
+end subroutine calculateWaveRunup
 
 end submodule submCalcWaveRunup

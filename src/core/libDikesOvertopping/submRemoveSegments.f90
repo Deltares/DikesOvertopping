@@ -28,9 +28,13 @@ contains
 !! remove dike segments
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure removeDikeSegments
-!***********************************************************************************************************
+module subroutine removeDikeSegments(geometry, index, geometryAdjusted, error)
    implicit none
+   type (tpGeometry),   intent(in)    :: geometry          !< structure with geometry data
+   integer,             intent(in)    :: index             !< index starting point new cross section
+   type (tpGeometry),   intent(inout) :: geometryAdjusted  !< geometry data with removed dike segments
+   type (tMessage),     intent(inout) :: error             !< error struct
+!***********************************************************************************************************
 
    ! initialize flag for succes and error message
    error%errorCode = 0
@@ -74,6 +78,6 @@ module procedure removeDikeSegments
 
    endif
 
-end procedure removeDikeSegments
+end subroutine removeDikeSegments
 
 end submodule submRemoveSegments

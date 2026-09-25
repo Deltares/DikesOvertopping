@@ -29,9 +29,13 @@ contains
 !! copy a geometry structure
 !!   @ingroup LibOvertopping
 !**********************************************************************************************************
-module procedure copyGeometry
-!***********************************************************************************************************
+module subroutine copyGeometry(geometry, geometryCopy, error, splitId)
    implicit none
+   type (tpGeometry),   intent(in)     :: geometry       !< structure with geometry data
+   type (tpGeometry),   intent(inout)  :: geometryCopy   !< structure with geometry data copy
+   type (tMessage),     intent(inout)  :: error          !< error struct
+   character, optional, intent(in)     :: splitId        !< B or F section
+!***********************************************************************************************************
 !
    integer  :: i  !< counter dike segments
 
@@ -66,6 +70,6 @@ module procedure copyGeometry
       geometryCopy%NbermSegments = geometry%NbermSegments
    endif
 
-end procedure copyGeometry
+end subroutine copyGeometry
 
 end submodule submCopyGeom

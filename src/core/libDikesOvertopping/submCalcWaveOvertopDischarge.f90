@@ -28,9 +28,17 @@ contains
 !! calculate the wave overtopping discharge
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateWaveOvertoppingDischarge
-!***********************************************************************************************************
+module subroutine calculateWaveOvertoppingDischarge(load, tanAlpha, gamma, ksi0, hCrest, modelFactors, Qo, error)
    implicit none
+   type(tpLoadX),            intent(in   ) :: load           !< load struct
+   real(kind=wp),            intent(in   ) :: tanAlpha       !< representative slope angle
+   type(tpInfluencefactors), intent(in   ) :: gamma          !< influence factors
+   real(kind=wp),            intent(in   ) :: ksi0           !< breaker parameter
+   real(kind=wp),            intent(in   ) :: hCrest         !< crest level (m+NAP)
+   type(tpOvertoppingInput), intent(in   ) :: modelFactors   !< structure with model factors
+   real(kind=wp),            intent(  out) :: Qo             !< wave overtopping discharge (l/m per s)
+   type(tMessage),           intent(inout) :: error          !< error struct
+!***********************************************************************************************************
 !
    real(kind=wp)  :: Qb !< dimensionless  overtopping discharge for breaking waves
    real(kind=wp)  :: Qn !< dimensionless  overtopping discharge for non-breaking waves
@@ -98,6 +106,6 @@ module procedure calculateWaveOvertoppingDischarge
       call GetMSGcalc_wave_overtopping_discharge(error%Message)
    endif
 
-end procedure calculateWaveOvertoppingDischarge
+end subroutine calculateWaveOvertoppingDischarge
 
 end submodule submCalcWaveOvertopDischarge

@@ -30,9 +30,19 @@ contains
 !! inner calculation for the wave runup
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure innerCalculation
-!***********************************************************************************************************
+module function innerCalculation(geometry, load, gamma_z, modelFactors, z2, &
+                             geometryFlatBerms, geometryNoBerms, error) result(z2_end)
    implicit none
+   type (tpGeometry),         intent(in)     :: geometry           !< structure with geometry data
+   type (tpLoadX),            intent(in)     :: load               !< load struct
+   type(tpInfluencefactors),  intent(inout)  :: gamma_z            !< influence factor angle wave attack 2% run-up
+   type (tpOvertoppingInput), intent(in)     :: modelFactors       !< structure with model factors
+   real(kind=wp),             intent(in)     :: z2                 !< 2% wave run-up (m)
+   type (tpGeometry),         intent(in)     :: geometryFlatBerms  !< structure with geometry data with horizontal berms
+   type (tpGeometry),         intent(inout)  :: geometryNoBerms  !< structure with geometry data with no berms
+   type (tMessage),           intent(inout)  :: error              !< error struct
+   real(kind=wp)                             :: z2_end             !< 2% wave run-up at end of inner calculation (m)
+!***********************************************************************************************************
 !
    real(kind=wp)     :: tanAlpha   !< representative slope angle
    real(kind=wp)     :: ksi0       !< breaker parameter
@@ -114,6 +124,6 @@ module procedure innerCalculation
 
    endif
 
-end procedure innerCalculation
+end function innerCalculation
 
 end submodule submInnerCalculation

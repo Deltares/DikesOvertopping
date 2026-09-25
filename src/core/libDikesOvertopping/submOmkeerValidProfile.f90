@@ -36,8 +36,15 @@ contains
 !! Subroutine with iterateToGivenDischarge, with already checked profile
 !!
 !! @ingroup dllDikesOvertopping
-module procedure OmkeerValidProfile
-implicit none
+module subroutine OmkeerValidProfile(load, geometry, givenDischarge, dikeHeight, modelFactors, overtopping, error)
+    implicit none
+    type(tpGeometry), intent(inout)            :: geometry       !< internal structure with geometry data
+    type(tpLoad), intent(in)                   :: load           !< struct with waterlevel and wave parameters
+    real(kind=wp), intent(in)                  :: givenDischarge !< discharge to iterate to
+    real(kind=wp), intent(out)                 :: dikeHeight     !< dike height
+    type(tpOvertoppingInput), intent(inout)    :: modelFactors   !< struct with modelFactors
+    type (tpOvertopping), intent(inout)        :: overtopping    !< structure with overtopping results
+    type(tMessage), intent(inout)              :: error          !< error struct
 !
     real(kind=wp)                              :: dis1                  ! discharge at minDikeHeight
     real(kind=wp)                              :: dis2                  ! discharge at maxDikeHeight
@@ -303,6 +310,6 @@ subroutine BermCheckLoopLowUp()
     enddo
 end subroutine BermCheckLoopLowUp
 
-end procedure OmkeerValidProfile
+end subroutine OmkeerValidProfile
 
 end submodule submOmkeerValidProfile

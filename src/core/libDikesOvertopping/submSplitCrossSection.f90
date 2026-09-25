@@ -28,9 +28,15 @@ contains
 !! split a cross section
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure splitCrossSection
-!***********************************************************************************************************
+module subroutine splitCrossSection(geometry, L0, NwideBerms, geometrysectionB, geometrysectionF, error)
    implicit none
+   type (tpGeometry),   intent(in   ) :: geometry          !< structure with geometry data
+   real(kind=wp),       intent(in   ) :: L0                !< wave length (m)
+   integer,             intent(  out) :: NwideBerms        !< number of wide berms
+   type (tpGeometry),   intent(inout) :: geometrySectionB  !< geometry data with wide berms to ordinary berms
+   type (tpGeometry),   intent(inout) :: geometrySectionF  !< geometry data with wide berms to foreshores
+   type (tMessage),     intent(inout) :: error             !< error struct
+!***********************************************************************************************************
 !
    integer        :: i           !< counter dike segments
    real(kind=wp)  :: B           !< width of berm segment (m)
@@ -115,6 +121,6 @@ module procedure splitCrossSection
 
    ! type of segments and number of berm segments is NOT recalculated
 
-end procedure splitCrossSection
+end subroutine splitCrossSection
 
 end submodule submSplitCrossSection

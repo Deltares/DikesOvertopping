@@ -29,9 +29,12 @@ contains
 !! check the input data
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure checkModelFactors
-!***********************************************************************************************************
+module subroutine checkModelFactors(modelFactors, errorMessages, ierr)
    implicit none
+   type (tpOvertoppingInput), intent(in)  :: modelFactors       !< structure with model factors
+   integer,                   intent(out) :: ierr               !< number of errors found
+   character(len=*),          intent(out) :: errorMessages(:)   !< error message
+!***********************************************************************************************************
 !
    integer           :: i        !< counter model factors
    character(len=32) :: par_txt  !< description model factor
@@ -82,6 +85,6 @@ module procedure checkModelFactors
       endif
    enddo
 
-end procedure checkModelFactors
+end subroutine checkModelFactors
 
 end submodule submCheckModelFactors

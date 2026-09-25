@@ -30,9 +30,17 @@ contains
 !! iteration for the wave runup
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure iterationWaveRunup
-!***********************************************************************************************************
+module subroutine iterationWaveRunup(geometry, geometryFlatBerms, geometryNoBerms, load, gamma_z, modelFactors, z2, error)
    implicit none
+   type (tpGeometry),         intent(in)     :: geometry          !< structure with geometry data
+   type (tpGeometry),         intent(inout)  :: geometryFlatBerms !< structure with geometry data with horizontal berms
+   type (tpGeometry),         intent(inout)  :: geometryNoBerms   !< structure with geometry data with no berms
+   type (tpLoadX),            intent(inout)  :: load              !< load struct
+   type(tpInfluencefactors),  intent(inout)  :: gamma_z           !< influence factor angle wave attack 2% run-up
+   type (tpOvertoppingInput), intent(in)     :: modelFactors      !< structure with model factors
+   real(kind=wp),             intent(out)    :: z2                !< 2% wave run-up (m)
+   type(tMessage),            intent(inout)  :: error             !< error struct
+!***********************************************************************************************************
 !
    integer                    :: i                        !< counter iteration steps
    real(kind=wp)              :: z2_start  (z2_iter_max2) !< starting value 2% wave run-up for each iteration step
@@ -126,7 +134,7 @@ module procedure iterationWaveRunup
       z2 = z2_end(Niterations)
    endif
 
-end procedure iterationWaveRunup
+end subroutine iterationWaveRunup
 
 !> determineStartingValue:
 !! helper function to find a start value for z2

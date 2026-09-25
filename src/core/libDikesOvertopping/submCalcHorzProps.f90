@@ -28,9 +28,14 @@ contains
 !! calculate horizontal lengths
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateHorzLengths
-!***********************************************************************************************************
+module subroutine calculateHorzLengths (geometry, yLower, yUpper, horzLengths, error)
    implicit none
+   type (tpGeometry), intent(in   ) :: geometry       !< structure with geometry data
+   real(kind=wp),     intent(in   ) :: yLower         !< y-coord. lower bound (m+NAP)
+   real(kind=wp),     intent(in   ) :: yUpper         !< y-coord. upper bound (m+NAP)
+   real(kind=wp),     intent(  out) :: horzLengths(:) !< horizontal lengths segments (m)
+   type(tMessage),    intent(inout) :: error          !< error struct
+!***********************************************************************************************************
 !
    integer        :: iLower   !< index dike segment lower bound
    integer        :: iUpper   !< index dike segment upper bound
@@ -105,15 +110,20 @@ module procedure calculateHorzLengths
       call GetMSGcalc_horizontal_lengths(error%Message)
    endif
 
-end procedure calculateHorzLengths
+end subroutine calculateHorzLengths
 
 !> calculateHorzDistance:
 !! calculate horizontal distance
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateHorzDistance
-!***********************************************************************************************************
+module subroutine calculateHorzDistance(geometry, yLower, yUpper, dx, error)
    implicit none
+   type (tpGeometry),   intent(in)     :: geometry       !< structure with geometry data
+   real(kind=wp),       intent(in)     :: yLower         !< y-coordinate lower bound (m+NAP)
+   real(kind=wp),       intent(in)     :: yUpper         !< y-coordinate upper bound (m+NAP)
+   real(kind=wp),       intent(inout)  :: dx             !< horizontal distance between bounds (m)
+   type(tMessage),      intent(inout)  :: error          !< error struct
+!***********************************************************************************************************
 !
    real(kind=wp) :: horzLengths(geometry%Coordinates%N-1) !< horizontal lengths segments (m)
 
@@ -125,6 +135,6 @@ module procedure calculateHorzDistance
    ! calculate horizontal distance
    if (error%errorCode == 0) dx = sum(horzLengths)
 
-end procedure calculateHorzDistance
+end subroutine calculateHorzDistance
 
 end submodule submCalcHorzProps

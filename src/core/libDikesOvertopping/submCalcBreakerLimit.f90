@@ -28,9 +28,12 @@ contains
 !! calculate the breaker limit
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateBreakerLimit
-!***********************************************************************************************************
+module subroutine calculateBreakerLimit(gammaB, ksi0Limit, error)
    implicit none
+   real(kind=wp),    intent(in   ) :: gammaB         ! influence factor for berms
+   real(kind=wp),    intent(  out) :: ksi0Limit      ! limit value breaker parameter
+   type(tMessage),   intent(inout) :: error          ! error struct
+!***********************************************************************************************************
 !
    real(kind=wp) :: coeff(4)    !< coefficients cubic function
    integer  :: N                !< number of real roots cubic function
@@ -83,6 +86,6 @@ module procedure calculateBreakerLimit
 
    endif
 
-end procedure calculateBreakerLimit
+end subroutine calculateBreakerLimit
 !
 end submodule submCalcBreakerLimit

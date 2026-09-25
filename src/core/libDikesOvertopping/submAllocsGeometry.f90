@@ -24,7 +24,10 @@ submodule (geometryModuleOvertopping) submAllocGeometry
    use OvertoppingMessages
 contains
 
-module procedure copyCoordinates
+module subroutine copyCoordinates(coordIn, coordOut)
+    type(tpCoordinatePair), intent(in   ) :: coordIn
+    type(tpCoordinatePair), intent(inout) :: coordOut
+
     integer :: i
     integer :: length
 
@@ -33,23 +36,30 @@ module procedure copyCoordinates
         coordOut%x(i) = coordIn%x(i)
         coordOut%y(i) = coordIn%y(i)
     end do
-end procedure copyCoordinates
+end subroutine copyCoordinates
 
-module procedure allocCoordinatePair
+module subroutine allocCoordinatePair(xy, n, ierr)
+   type(tpCoordinatePair), intent(inout) :: xy
+   integer               , intent(in   ) :: n
+   integer               , intent(  out) :: ierr
+
                   allocate(xy%x(n), stat=ierr)
    if (ierr == 0) allocate(xy%y(n), stat=ierr)
-end procedure allocCoordinatePair
+end subroutine allocCoordinatePair
 
-module procedure cleanupCoordinatePair
+module subroutine cleanupCoordinatePair(xy)
+   type(tpCoordinatePair), intent(inout) :: xy
+
    if (allocated(xy%x)) deallocate(xy%x)
    if (allocated(xy%y)) deallocate(xy%y)
-end procedure cleanupCoordinatePair
+end subroutine cleanupCoordinatePair
 
 !> deallocateGeometry:
 !! deallocate the geometry vectors
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure deallocateGeometry
+module subroutine deallocateGeometry(geometry)
+    type (tpGeometry), intent(inout) :: geometry     !< structure with geometry data
 !***********************************************************************************************************
     call cleanupCoordinatePair(geometry%Coordinates)
     call cleanupCoordinatePair(geometry%CoordDiff)
@@ -57,6 +67,6 @@ module procedure deallocateGeometry
     if (allocated(geometry%segmentSlopes))    deallocate(geometry%segmentSlopes)
     if (allocated(geometry%segmentTypes))     deallocate(geometry%segmentTypes)
 
-end procedure deallocateGeometry
+end subroutine deallocateGeometry
 
 end submodule submAllocGeometry

@@ -29,9 +29,13 @@ contains
 !! calculate the roots of a cubic function
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure realRootsCubicFunction
-!***********************************************************************************************************
+module subroutine realRootsCubicFunction(coeff, N, x, error)
    implicit none
+   real(kind=wp),    intent(in  )  :: coeff(:) !< four coefficients cubic function
+   integer,          intent(  out) :: N        !< number of real roots cubic function
+   real(kind=wp),    intent(  out) :: x(3)     !< real roots cubic function
+   type(tMessage),   intent(inout) :: error    !< error struct
+!***********************************************************************************************************
 !
    double complex :: z(3)  !< complex roots cubic function
    integer        :: i     !< counter complex roots
@@ -65,7 +69,7 @@ module procedure realRootsCubicFunction
 
    endif
 
-end procedure realRootsCubicFunction
+end subroutine realRootsCubicFunction
 
 !> rootsGeneralCubic:
 !! calculate the roots of a generic cubic function
