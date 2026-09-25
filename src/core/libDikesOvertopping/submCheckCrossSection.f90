@@ -28,9 +28,13 @@ contains
 !> checkCrossSection:
 !! check cross section
 !!   @ingroup LibOvertopping
-module procedure checkCrossSection
-!
+module subroutine checkCrossSection (psi, coordinates, roughnessFactors, error)
    implicit none
+   real(kind=wp),          intent(in)    :: psi                 !< dike normal (degrees)
+   type(tpCoordinatePair), intent(in)    :: coordinates         !< x/y coordinates
+   real(kind=wp),          intent(in)    :: roughnessFactors(:) !< roughness factors
+   type(tMessage),         intent(inout) :: error               !< error struct
+!
 !
 !  Local parameters
 !
@@ -96,7 +100,7 @@ module procedure checkCrossSection
 
    call deallocateGeometry(geometry)
 
-   end procedure checkCrossSection
+   end subroutine checkCrossSection
 
 end submodule subMCheckCrossSection
 

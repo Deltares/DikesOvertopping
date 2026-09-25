@@ -30,9 +30,12 @@ contains
 !! validate the input geometry (the adjusted geometry is checked elsewhere)
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure basicGeometryValidation
-!***********************************************************************************************************
+module subroutine basicGeometryValidation(geometryF, success, errorStruct)
    implicit none
+   type(OvertoppingGeometryTypeF), intent(in) :: geometryF           !< struct with geometry and roughness
+   type(TErrorMessages), intent(inout)        :: errorStruct         !< error message (only set if not successful)
+   logical, intent(out)                       :: success             !< success flag
+!***********************************************************************************************************
 !
 !  Local parameters
 !
@@ -85,6 +88,6 @@ module procedure basicGeometryValidation
            call addMessage(errorStruct, message)
        endif
    enddo
-end procedure basicGeometryValidation
+end subroutine basicGeometryValidation
 
 end submodule submBasicGeometryValidation

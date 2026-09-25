@@ -29,9 +29,11 @@ contains
 !! determine the segment types
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure determineSegmentTypes
-!***********************************************************************************************************
+module subroutine determineSegmentTypes (geometry, error)
    implicit none
+   type (tpGeometry),   intent(inout)  :: geometry     !< structure with geometry data
+   type (tMessage),     intent(inout)  :: error        !< error struct
+!***********************************************************************************************************
 
    integer  :: i              !< counter dike segments
    logical  :: slopeSegment   !< flag for slope segment
@@ -78,6 +80,6 @@ module procedure determineSegmentTypes
        write(error%Message, cfmt) nBerms
    endif
 
-end procedure determineSegmentTypes
+end subroutine determineSegmentTypes
 
 end submodule submDetermineSegmentTypes

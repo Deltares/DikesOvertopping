@@ -23,16 +23,23 @@
 submodule (mainModuleOvertopping) submAllocOvertopping
    use geometryModuleOvertopping
 contains
-module procedure initGeometries
+module subroutine initGeometries(geometryF, geometry, error)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"initGeometries" :: initGeometries
+      type(OvertoppingGeometryTypeF), intent(inout) :: geometryF      !< struct with geometry and roughness
+      type(tpGeometry),               intent(inout) :: geometry
+      type(tMessage)  ,               intent(inout) :: error
+
       type (tpCoordinatePair)         :: coordinates         !< vector with x/y-coordinates
 
       coordinates%N = geometryF%npoints
       coordinates%x = geometryF%xcoords
       coordinates%y = geometryF%ycoords
       call initializeGeometry(geometryF%normal, coordinates, geometryF%roughness, geometry, error)
-end procedure initGeometries
+end subroutine initGeometries
 
-module procedure setupGeometries
+module subroutine setupGeometries(geometries)
+      type(tpGeometries), target, intent(inout) :: geometries
+
       allocate(geometries%adjWithDikeHeight)
       allocate(geometries%geometryMergedBerms)
       allocate(geometries%geometrySectionB)
@@ -46,9 +53,11 @@ module procedure setupGeometries
       geometries%geometrySectionF%parent => geometries
       geometries%geometryFlatBerms%parent => geometries
       geometries%geometryRemoveDikeSegments%parent => geometries
-end procedure setupGeometries
+end subroutine setupGeometries
 
-module procedure cleanup_Geometry
+module subroutine cleanup_Geometry(geometries)
+      type(tpGeometries), intent(inout) :: geometries
+
       call deallocateGeometry(geometries%adjWithDikeHeight)
       call deallocateGeometry(geometries%geometryMergedBerms)
       call deallocateGeometry(geometries%geometrySectionB)
@@ -69,6 +78,6 @@ module procedure cleanup_Geometry
 
       call cleanupCoordinatePair(geometries%CoordsAdjusted)
 
-end procedure cleanup_Geometry
+end subroutine cleanup_Geometry
 
 end submodule submAllocOvertopping

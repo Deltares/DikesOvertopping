@@ -31,9 +31,14 @@ contains
 !! calculate the overtopping
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateOvertopping
-!***********************************************************************************************************
+module subroutine calculateOvertopping(geometry, load, modelFactors, overtopping, error)
    implicit none
+   type (tpGeometry),         intent(inout) :: geometry       !< structure with geometry data
+   type (tpLoad),             intent(in)    :: load           !< structure with load parameters
+   type (tpOvertoppingInput), intent(in)    :: modelFactors   !< structure with model factors
+   type (tpOvertopping),      intent(  out) :: overtopping    !< structure with overtopping results
+   type(tMessage),            intent(inout) :: error          !< error struct
+!***********************************************************************************************************
 !
    real(kind=wp)            :: toe                  !< height of the dike toe (m+NAP)
    real(kind=wp)            :: crest                !< crest height (m+NAP)
@@ -151,6 +156,6 @@ contains
       endif
    end subroutine startCalcCrossSections
 
-end procedure calculateOvertopping
+end subroutine calculateOvertopping
 
 end submodule submCalcOvertopping

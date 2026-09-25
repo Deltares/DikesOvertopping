@@ -29,9 +29,19 @@ contains
 !! calculate the overtopping for a section
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure calculateOvertoppingSection
+module subroutine calculateOvertoppingSection(geometry, geometryRemoveDikeSegments, geometryFlatBerms, geometryNoBerms, load, gamma_z, gamma_o, modelFactors, overtopping, error)
+   implicit none
+   type (tpGeometry),         intent(in)     :: geometry                   !< structure with geometry data
+   type (tpGeometry),         intent(inout)  :: geometryRemoveDikeSegments !< structure with geometry data with removed dike segements
+   type (tpGeometry),         intent(inout)  :: geometryFlatBerms          !< structure with geometry data with flat berms
+   type (tpGeometry),         intent(inout)  :: geometryNoBerms            !< structure with geometry data with no berms
+   type (tpLoadX),            intent(inout)  :: load                       !< load struct
+   type(tpInfluencefactors),  intent(inout)  :: gamma_z                    !< influence angle wave attack wave run-up
+   type(tpInfluencefactors),  intent(inout)  :: gamma_o                    !< influence angle wave attack overtopping
+   type (tpOvertoppingInput), intent(in)     :: modelFactors               !< structure with model factors
+   type (tpOvertopping),      intent(out)    :: overtopping                !< structure with overtopping results
+   type(tMessage),            intent(inout)  :: error                      !< error struct
 !***********************************************************************************************************
-!   implicit none
 !
    integer                    :: foreshoreCase     !< foreshore case
    real(kind=wp)              :: dH                !< water depth at the end of the foreshore (m)
@@ -232,6 +242,6 @@ function getForeshoreCase () result(foreshoreCase)
 
 end function getForeshoreCase
 
-end procedure calculateOvertoppingSection
+end subroutine calculateOvertoppingSection
 
 end submodule submCalcOvertopSection

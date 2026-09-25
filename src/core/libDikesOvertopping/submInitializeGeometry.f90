@@ -29,9 +29,14 @@ contains
 !! initialize the geometry
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure initializeGeometry
-!***********************************************************************************************************
+module subroutine initializeGeometry (psi, coordinates, roughnessFactors, geometry, error)
    implicit none
+   real(kind=wp),             intent(in   ) :: psi                 !< dike normal (degree)
+   type (tpCoordinatePair),   intent(in   ) :: coordinates         !< x/y-coordinates
+   real(kind=wp),             intent(in   ) :: roughnessFactors(:) !< roughness factors
+   type (tpGeometry), target, intent(inout) :: geometry            !< structure with geometry data
+   type (tMessage),           intent(inout) :: error               !< error struct
+!***********************************************************************************************************
 !
 !  local parameters
 !
@@ -85,6 +90,6 @@ module procedure initializeGeometry
    if (error%errorCode == 0) then
       geometry%NbermSegments = count(geometry%segmentTypes == 2)
    endif
-end procedure initializeGeometry
+end subroutine initializeGeometry
 
 end submodule submInitializeGeometry

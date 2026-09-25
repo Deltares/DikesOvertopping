@@ -28,9 +28,12 @@ contains
 !! remove berms
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure removeBerms
-!***********************************************************************************************************
+module subroutine removeBerms(geometry, geometryNoBerms, error)
    implicit none
+   type (tpGeometry),   intent(in   ) :: geometry          !< structure with geometry data
+   type (tpGeometry),   intent(inout) :: geometryNoBerms   !< geometry data withouth berms
+   type (tMessage),     intent(inout) :: error             !< error struct
+!***********************************************************************************************************
 !
    integer        :: i     !< counter dike segments
    integer        :: N     !< counter points cross section without berms
@@ -111,6 +114,6 @@ module procedure removeBerms
 
    endif
 
-end procedure removeBerms
+end subroutine removeBerms
 
 end submodule submRemoveBerms

@@ -29,9 +29,14 @@ contains
 !! adjust the influence factors
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure adjustInfluenceFactors
-!***********************************************************************************************************
+module subroutine adjustInfluenceFactors(gamma, gammaBetaType, ksi0, ksi0Limit, error)
    implicit none
+   type(tPInfluenceFactors), intent(inout) :: gamma          !< influence factors
+   integer,                  intent(in)    :: gammaBetaType  !< type influence factor angle of wave attack: 1 = wave run-up, 2 = overtopping
+   real(kind=wp),            intent(in)    :: ksi0           !< breaker parameter
+   real(kind=wp),            intent(in)    :: ksi0Limit      !< limit value breaker parameter
+   type(tMessage),           intent(inout) :: error          !< error struct
+!***********************************************************************************************************
 !
    real(kind=wp)  :: gammaB_min     !< minimal value influence factor berms
    real(kind=wp)  :: gammaF_min     !< minimal value influence factor roughness
@@ -106,6 +111,6 @@ module procedure adjustInfluenceFactors
       call GetMSGcalc_influence_factors(error%Message)
    endif
 
-end procedure adjustInfluenceFactors
+end subroutine adjustInfluenceFactors
 
 end submodule submAdjInfluenceFactors

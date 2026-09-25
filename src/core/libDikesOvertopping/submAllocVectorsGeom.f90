@@ -28,9 +28,12 @@ contains
 !! allocate the geometry vectors
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure allocateVectorsGeometry
-!***********************************************************************************************************
+module subroutine allocateVectorsGeometry (nCoordinates, geometry, error)
    implicit none
+    integer,             intent(in)     :: nCoordinates   !< number of coordinates
+    type (tpGeometry),   intent(inout)  :: geometry       !< structure with geometry data
+    type (tMessage),     intent(inout)  :: error          !< error struct
+!***********************************************************************************************************
 !
 !  local parameters
 !
@@ -59,6 +62,6 @@ module procedure allocateVectorsGeometry
        write(error%Message, GetFMTallocateError()) sizeArrays
    endif
 
-end procedure allocateVectorsGeometry
+end subroutine allocateVectorsGeometry
 
 end submodule submAllocVectorsGeom

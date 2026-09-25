@@ -28,9 +28,13 @@ contains
 !! check the input data
 !!   @ingroup LibOvertopping
 !***********************************************************************************************************
-module procedure checkInputdata
-!***********************************************************************************************************
+module subroutine checkInputdata(geometry, load, modelFactors, error)
    implicit none
+   type (tpGeometry)    ,     intent(in   ) :: geometry       !< structure with geometry data
+   type (tpLoad)        ,     intent(in   ) :: load           !< structure with load parameters
+   type (tpOvertoppingInput), intent(in   ) :: modelFactors   !< structure with model factors
+   type (tMessage),           intent(inout) :: error          !< error struct
+!***********************************************************************************************************
     character(len=StrLenMessages) :: errorTexts(5)  !< local error or validation messages
 
 ! ==========================================================================================================
@@ -74,6 +78,6 @@ module procedure checkInputdata
       end if
    endif
 
-end procedure checkInputdata
+end subroutine checkInputdata
 
 end submodule submCheckInputdata
