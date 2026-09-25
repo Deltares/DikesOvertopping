@@ -27,6 +27,9 @@
 !!  - calculateQo
 !!  - calculateQoF
 !!  - calculateQoJ
+!!  - calculateQoHPC
+!!  - cleanupGeometry
+!!  - GeometriesSetup
 !!  - ValidateInputC
 !!  - ValidateInputF
 !!  - ValidateInputJ
@@ -593,7 +596,7 @@ subroutine input_j_f(x, y, roughness, normal, geometryF, modelFactorsJ, modelFac
     real(kind=wp), intent(in) :: x(:), y(:), roughness(:), normal, modelFactorsJ(:)
     real(kind=wp), intent(in), optional :: loadJ(:)
     type(tpOvertoppingInput), intent(out) :: modelFactorsF
-    type(OvertoppingGeometryTypeF), intent(out) :: geometryF
+    type(OvertoppingGeometryTypeF), intent(inout) :: geometryF
     type(tpLoad), intent(out), optional :: loadF
 
     geometryF%nPoints = size(x)
@@ -634,5 +637,36 @@ subroutine getLanguageDll(lang)
     character(len=*) :: lang
     call getLanguage(lang)
 end subroutine getLanguageDll
+
+subroutine calculateQoHPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"calculateQoHPC" :: calculateQoHPC
+    use typeDefinitionsOvertopping, only : tpOvertopping
+    use typeDefinitionsOvertopping, only : tpGeometries
+    use errorMessages,              only : tMessage
+    real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
+    type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
+    type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
+    type (tpGeometries), target,   intent(inout) :: geometries     !< structure with geometry data
+    type (tpLoad),                 intent(in)    :: load           !< structure with load parameters
+    type(tMessage),                intent(inout) :: error          !< error struct
+
+    call calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+end subroutine calculateQoHPC
+
+subroutine cleanupGeometry(geometries)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"cleanupGeometry" :: cleanupGeometry
+    use typeDefinitionsOvertopping, only : tpGeometries
+    type(tpGeometries), intent(inout) :: geometries
+
+    call cleanup_Geometry(geometries)
+end subroutine cleanupGeometry
+
+subroutine GeometriesSetup(geometries)
+!DEC$ ATTRIBUTES DLLEXPORT,ALIAS:"GeometriesSetup" :: GeometriesSetup
+    use mainModuleOvertopping, only : setupGeometries
+    use typeDefinitionsOvertopping, only : tpGeometries
+    type(tpGeometries), target, intent(inout) :: geometries
+    call setupGeometries(Geometries)
+end subroutine GeometriesSetup
 
 end module dllOvertopping
