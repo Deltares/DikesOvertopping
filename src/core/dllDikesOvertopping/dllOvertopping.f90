@@ -27,6 +27,9 @@
 !!  - calculateQo
 !!  - calculateQoF
 !!  - calculateQoJ
+!!  - calculateQoHPC
+!!  - cleanupGeometry
+!!  - GeometriesSetup
 !!  - ValidateInputC
 !!  - ValidateInputF
 !!  - ValidateInputJ
