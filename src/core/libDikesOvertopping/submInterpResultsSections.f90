@@ -68,6 +68,8 @@ module subroutine interpolateResultsSections(geometry, L0, NwideBerms, overtoppi
          ! add to total width if the berm segment is a wide berm
          if ((B < L0) .and. (B > 0.25d0*L0)) then
             Bsum = Bsum + B
+         else if (geometry%isAdaptedToForeshore) then
+            Bsum = Bsum + B
          endif
 
       endif

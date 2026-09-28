@@ -56,6 +56,7 @@
       integer, allocatable        :: segmentTypes(:)             !< vector with segment types (1=slope,2=berm,3=other)
       integer                     :: NbermSegments               !< number of berm segments
       character                   :: splitId                     !< id for B and F splitted type geometries
+      logical                     :: isAdaptedToForeshore = .false.
       type(tpGeometries), pointer :: parent => null()            !< (temp) pointer to all geometries
    end type tpGeometry
 
