@@ -28,8 +28,9 @@ submodule (omkeerVariantModule) submOmkeerValidProfile
     use zFunctionsOvertopping
     use parametersOvertopping
     use vectorUtilities, only : logLinearInterpolate
-    use mainModuleOvertopping, only : setupGeometries, cleanup_Geometry
-
+    use mainModuleOvertopping,       only : calculateOvertopping, setupGeometries, cleanup_Geometry
+    use vectorUtilities,             only : interpolateLine
+    implicit none
 contains
 
 !>
@@ -282,7 +283,7 @@ subroutine BermCheckLoopLowUp()
     do i = iLow + 1, iUp - 1
         if (.not. omkeerProps%isBerm(i) ) then
             nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i)
-            call calculateQo_HPC(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, error )
+            call calculateQo_HPC(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, error, profileInStructureBerm, i)
             if (error%errorCode /= 0) return ! only in very exceptional cases
             omkeerProps%ZProfile(i) = nextDikeHeight
             omkeerProps%dischargeProfile(i) = overtopping%Qo
@@ -311,5 +312,33 @@ subroutine BermCheckLoopLowUp()
 end subroutine BermCheckLoopLowUp
 
 end subroutine OmkeerValidProfile
+
+!>
+!! Subroutine to fill the profile in a structure and call the adjustment function of the profile due to a desired dike height
+!! simplified version where we know how many profile points remain and what the x value of the new point is
+subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index, error)
+    type(tpCoordinatePair),  intent(in)     :: coordinates     !< structure for the profile
+    real(kind=wp),           intent(in)     :: dikeHeight      !< dike height
+    type(tMessage),          intent(inout)  :: error           !< error struct
+    type(tpCoordinatePair),  intent(inout)  :: coordsAdjusted  !< coordinates in the adjusted profile
+    integer,                 intent(in)     :: index           !< index in profile (after berm segment)
+
+    CoordsAdjusted%N = index + 1
+
+    !
+    ! allocate xCoordsAdjusted and check result
+    !
+    call reallocAdjustedCoordinates(CoordsAdjusted, error)
+
+    if (error%errorCode == 0) then
+
+        ! all segments of the profile except the last
+        call copyCoordinates(coordinates, CoordsAdjusted)
+
+        ! last segment of the profile
+        CoordsAdjusted%y(CoordsAdjusted%N) = dikeHeight
+        CoordsAdjusted%x(CoordsAdjusted%N) = coordinates%x(CoordsAdjusted%N-1) + xDiff_min
+    endif
+end subroutine profileInStructureBerm
 
 end submodule submOmkeerValidProfile

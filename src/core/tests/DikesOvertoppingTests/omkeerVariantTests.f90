@@ -929,7 +929,7 @@ subroutine omkeerVariantIssue42B
     givenDischarge = 1d-3
     call iterateToGivenDischarge(load, geometryF, givenDischarge, dikeHeight, modelFactors, overtopping, error)
     call assert_equal(error%errorCode, 0, error%Message)
-    call assert_comparable(dikeHeight, 5.13584_wp, 1e-4_wp, 'dikeHeight from omkeer variant')
+    call assert_comparable(dikeHeight, 5.03675_wp, 1e-4_wp, 'dikeHeight from omkeer variant')
     call assert_comparable(overtopping%z2, 1.405_wp, 1e-4_wp, 'z2 from omkeer variant')
 
     ! clean up

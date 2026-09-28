@@ -45,20 +45,32 @@ module zFunctionsOvertopping
 
     private
 
-    public :: calculateQo_HPC, zFuncLogRatios, profileInStructure
+    public :: calculateQo_HPC, zFuncLogRatios, profileInStructure, reallocAdjustedCoordinates
 
+    abstract interface
+        subroutine indexedProfileBuilder(coordinates, dikeHeight, coordsAdjusted, index, error)
+            import :: wp, tpCoordinatePair, tMessage
+            type(tpCoordinatePair), intent(in)    :: coordinates
+            real(kind=wp),          intent(in)    :: dikeHeight
+            type(tpCoordinatePair), intent(inout) :: coordsAdjusted
+            integer,                intent(in)    :: index
+            type(tMessage),         intent(inout) :: error
+        end subroutine indexedProfileBuilder
+    end interface
 contains
 
 !>
 !! Subroutine to calculate the overtopping discharge with the Overtopping dll
 !! @ingroup LibOvertopping
-subroutine calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometries, error)
+subroutine calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometries, error, profileBuilder, profileIndex)
     real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
     type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
     type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
     type (tpGeometries), target,   intent(inout) :: geometries     !< structure with geometry data
     type (tpLoad),                 intent(in)    :: load           !< structure with load parameters
     type(tMessage),                intent(inout) :: error          !< error struct
+    procedure(indexedProfileBuilder), optional   :: profileBuilder !< method for updating the profile, needed for berm in omkeer variant
+    integer,              intent(in), optional   :: profileIndex   !< extra argument for profileBuilder
 
     type (tpGeometry), pointer    :: geometryAdjusted       !< structure for the adjusted profile
     type (tpGeometry), pointer    :: geometry               !< structure for the base profile
@@ -71,7 +83,17 @@ subroutine calculateQo_HPC(dikeHeight, modelFactors, overtopping, load, geometri
     geometryAdjusted => geometries%adjWithDikeHeight
     geometry         => geometries%base
 
-    call profileInStructure(geometry%Coordinates, dikeHeight, geometries%CoordsAdjusted, error)
+    if (present(profileBuilder)) then
+        if (.not. present(profileIndex)) then
+            error%errorCode = 1
+            error%message = 'Profile index is required for the selected profile builder.'
+            return
+        endif
+        call profileBuilder(geometry%Coordinates, dikeHeight, &
+                        geometries%CoordsAdjusted, profileIndex, error)
+    else
+        call profileInStructure(geometry%Coordinates, dikeHeight, geometries%CoordsAdjusted, error)
+    end if
 
     if (error%errorCode == 0) then
         call initializeGeometry (geometry%psi, geometries%CoordsAdjusted, &
@@ -168,7 +190,7 @@ subroutine profileInStructure(coordinates, dikeHeight, coordsAdjusted, error)
         enddo
 
         !
-        ! allocate xCoordsAdjusted and zCoordsAdjusted and check result
+        ! allocate xCoordsAdjusted and check result
         !
         call reallocAdjustedCoordinates(CoordsAdjusted, error)
         if (error%errorCode == 0) then
