@@ -315,7 +315,7 @@ end subroutine OmkeerValidProfile
 
 !>
 !! Subroutine to calculate the overtopping discharge with the Overtopping dll
-!! @ingroup LibOvertopping
+!! based on calculateQo_HPC, but with a variant of profileInStructure: profileInStructureBerm
 subroutine calculateQo_berm(dikeHeight, modelFactors, overtopping, load, geometries, index, error)
     real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
     type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
@@ -359,7 +359,7 @@ end subroutine calculateQo_berm
 
 !>
 !! Subroutine to fill the profile in a structure and call the adjustment function of the profile due to a desired dike height
-!! @ingroup LibOvertopping
+!! simplified version where we know how many profile points remain and what the x value of the new point is
 subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index, error)
     type(tpCoordinatePair),  intent(in)     :: coordinates     !< structure for the profile
     real(kind=wp),           intent(in)     :: dikeHeight      !< dike height
@@ -373,6 +373,7 @@ subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index
     ! allocate xCoordsAdjusted and check result
     !
     call reallocAdjustedCoordinates(CoordsAdjusted, error)
+
     if (error%errorCode == 0) then
 
         ! all segments of the profile except the last
