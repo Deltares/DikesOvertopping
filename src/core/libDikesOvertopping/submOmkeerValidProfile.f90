@@ -283,7 +283,7 @@ subroutine BermCheckLoopLowUp()
     do i = iLow + 1, iUp - 1
         if (.not. omkeerProps%isBerm(i) ) then
             nextDikeHeight = geometry%Coordinates%y(i) + xDiff_min * geometry%segmentSlopes(i)
-            call calculateQo_berm(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, i , error)
+            call calculateQo_HPC(nextDikeHeight, modelFactors, overtopping, load, geometry%parent, error, profileInStructureBerm, i)
             if (error%errorCode /= 0) return ! only in very exceptional cases
             omkeerProps%ZProfile(i) = nextDikeHeight
             omkeerProps%dischargeProfile(i) = overtopping%Qo
@@ -314,50 +314,6 @@ end subroutine BermCheckLoopLowUp
 end subroutine OmkeerValidProfile
 
 !>
-!! Subroutine to calculate the overtopping discharge with the Overtopping dll
-!! based on calculateQo_HPC, but with a variant of profileInStructure: profileInStructureBerm
-subroutine calculateQo_berm(dikeHeight, modelFactors, overtopping, load, geometries, index, error)
-    real(kind=wp),                 intent(in)    :: dikeHeight     !< dike height
-    type(tpOvertoppingInput),      intent(inout) :: modelFactors   !< struct with model factors
-    type (tpOvertopping),          intent(out)   :: overtopping    !< structure with overtopping results
-    type (tpGeometries), target,   intent(inout) :: geometries     !< structure with geometry data
-    type (tpLoad),                 intent(in)    :: load           !< structure with load parameters
-    integer,                       intent(in)    :: index          !< index in profile (after berm segment)
-    type(tMessage),                intent(inout) :: error          !< error struct
-
-    type (tpGeometry), pointer    :: geometryAdjusted       !< structure for the adjusted profile
-    type (tpGeometry), pointer    :: geometry               !< structure for the base profile
-
-    ! ==========================================================================================================
-    !
-    !   Initialise
-    !
-
-    geometryAdjusted => geometries%adjWithDikeHeight
-    geometry         => geometries%base
-
-    call profileInStructureBerm(geometry%Coordinates, dikeHeight, geometries%CoordsAdjusted, index, error)
-
-    if (error%errorCode == 0) then
-        call initializeGeometry (geometry%psi, geometries%CoordsAdjusted, &
-                                 geometry%roughnessFactors, geometryAdjusted, error)
-    endif
-
-    if (error%errorCode == 0) then
-        ! first time we use load
-        call calculateOvertopping (geometryAdjusted, load, modelFactors, overtopping, error)
-    endif
-
-    if (error%errorCode /= 0) then
-        overtopping%Qo = tiny(1.0d0)
-        overtopping%z2 = 0d0
-    endif
-
-    geometries%geometrySectionBNoBerms%Coordinates%N = 0
-    geometries%geometrySectionFNoBerms%Coordinates%N = 0
-end subroutine calculateQo_berm
-
-!>
 !! Subroutine to fill the profile in a structure and call the adjustment function of the profile due to a desired dike height
 !! simplified version where we know how many profile points remain and what the x value of the new point is
 subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index, error)
@@ -384,6 +340,5 @@ subroutine profileInStructureBerm(coordinates, dikeHeight, coordsAdjusted, index
         CoordsAdjusted%x(CoordsAdjusted%N) = coordinates%x(CoordsAdjusted%N-1) + xDiff_min
     endif
 end subroutine profileInStructureBerm
-
 
 end submodule submOmkeerValidProfile
