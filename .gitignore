@@ -53,3 +53,7 @@ build*
 # Miscellaneous
 *.bak
 packages
+
+# Output unit tests
+src/core/tests/unitTests/output_section*.txt
+src/core/tests/unitTests/ftnunit.*
